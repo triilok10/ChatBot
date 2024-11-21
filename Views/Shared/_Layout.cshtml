@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ChatBot.styles.css" asp-append-version="true" />
-    
 </head>
 <body>
     <header>
@@ -49,11 +48,93 @@
         </main>
     </div>
 
-    <footer class="footer text-muted">
+
+
+    <footer class="footer text-muted" style="background-color: #f1f1f1; padding: 30px 0;">
         <div class="container">
-            &copy; @DateTime.Now.Year - ChatBot - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row w-100" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center;">
+
+                <!-- Left Section -->
+                <div class="col-12 col-md-6 d-flex flex-column justify-content-start align-items-start text-left mb-4 mb-md-0">
+                    <div class="slogan-section" style="font-size: 2rem; font-weight: bold; color: #333;">
+                        <h1 class="h2">Empowering Conversations,<br /> The Future of Chatbots</h1>
+                        <h3 class="lead" style="color: #777;">Transform your business with smart automation and conversational AI.</h3>
+                    </div>
+                </div>
+
+                <!-- Right Section -->
+                <div class="col-12 col-md-6 d-flex flex-column justify-content-start align-items-end text-right mb-4 mb-md-0">
+                    <div class="links-section">
+                        <ul class="list-unstyled" style="font-size: 1rem; color: #555;">
+                            <li><a href="/" style="color: #555; text-decoration: none; margin-bottom: 10px;">Home</a></li>
+                            <li><a href="/about" style="color: #555; text-decoration: none; margin-bottom: 10px;">About</a></li>
+                            <li><a href="@Url.Action("Privacy", "Home")" style="color: #555; text-decoration: none;">Privacy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Developer Section at the Bottom -->
+            <div class="developer-section text-center" style="font-size: 0.9rem; color: #888; margin-top: auto;">
+                <p>&copy; @DateTime.Now.Year - Developer: Trilok Chand Swami</p>
+            </div>
         </div>
     </footer>
+
+    <style>
+
+        @@media (max-width: 576px) {
+            .slogan-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .slogan-section h3 {
+                font-size: 0.9rem;
+            }
+
+            .links-section ul {
+                font-size: 0.8rem;
+            }
+        }
+
+        @@media (min-width: 576px) and (max-width: 768px) {
+            .slogan-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .slogan-section h3 {
+                font-size: 1rem;
+            }
+
+            .links-section ul {
+                font-size: 0.9rem;
+            }
+        }
+
+        @@media (min-width: 768px) {
+            .slogan-section h1 {
+                font-size: 2rem;
+            }
+
+            .slogan-section h3 {
+                font-size: 1.2rem;
+            }
+
+            .links-section ul {
+                font-size: 1rem;
+            }
+        }
+
+        @@media (min-width: 992px) {
+            .slogan-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .slogan-section h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
