@@ -302,10 +302,21 @@
 
     //Speak on the Button Click
     document.getElementById('getStarted').addEventListener('click', function () {
-        var speech = new SpeechSynthesisUtterance();
-        speech.text = "Hello, Welcome to Apna AI.,Experience next-generation AI chat technology designed to make your interactions more intuitive, efficient, and human-like. Apna AI is here to revolutionize the way you connect and create.";
-        window.speechSynthesis.speak(speech);
+
+        if (sessionStorage.getItem('speechPlayed') !== 'true') {
+            var speech = new SpeechSynthesisUtterance();
+            speech.text = "Hello, Welcome to Apna AI, Experience next-generation AI chat technology designed to make your interactions more intuitive, efficient, and human-like. Apna AI is here to revolutionize the way you connect and create.";
+
+
+            window.speechSynthesis.speak(speech);
+
+            sessionStorage.setItem('speechPlayed', 'true');
+        } else {
+            console.log("Speech has already been played for this session.");
+        }
     });
+
+
 
 
 </script>
