@@ -29,17 +29,17 @@ app.UseRouting();
 
 app.Use(async (context, next) =>
 {
-    var origin = context.Request.Headers["Host"].FirstOrDefault();
-    if (!string.IsNullOrEmpty(origin) && origin != "localhost:7254")
-    {
-        context.Response.StatusCode = 500;
-        await context.Response.WriteAsync("Unauthorized.");
-        return;
-    }
-
     // If it's a POST request, check CSRF token
     if (context.Request.Method == "POST")
     {
+        var origin = context.Request.Headers["Host"].FirstOrDefault();
+        if (!string.IsNullOrEmpty(origin) && origin != "localhost:7254")
+        {
+            context.Response.StatusCode = 500;
+            await context.Response.WriteAsync("Unauthorized.");
+            return;
+        }
+
         var antiforgery = context.RequestServices.GetRequiredService<IAntiforgery>();
         var tokenFromHeader = context.Request.Headers["X-XSRF-TOKEN"].FirstOrDefault();
 

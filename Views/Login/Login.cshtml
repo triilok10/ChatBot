@@ -3,6 +3,7 @@
 }
 
 <style>
+    /* Common Styles */
     .form-container {
         display: flex;
         justify-content: space-between;
@@ -21,7 +22,6 @@
         align-self: end;
     }
 
-        /* Make the SVG responsive */
         .form-left svg {
             width: 100%;
             height: auto;
@@ -41,14 +41,26 @@
         color: #333;
     }
 
-    .form-row select, .form-row input {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        background-color: #f9f9f9;
+    .form-row {
+        margin-bottom: 20px;
     }
+
+        .form-row label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+            display: block;
+        }
+
+        .form-row input, .form-row select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
 
     .form-checkbox {
         margin-bottom: 20px;
@@ -138,6 +150,35 @@
             margin-left: 0;
         }
     }
+
+    .form-checkbox {
+        display: flex; 
+        align-items: center;
+        margin-bottom: 15px; 
+    }
+
+        .form-checkbox label {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .form-checkbox p {
+            margin: 0; 
+            font-size: 14px; 
+        }
+
+        .form-checkbox .text {
+            color: #007bff;
+        }
+
+            .form-checkbox .text:hover {
+                text-decoration: underline; 
+            }
+
 </style>
 
 <div class="container-fluid" style="padding:0px;">
@@ -291,78 +332,150 @@
                     <path style=" stroke:none;fill-rule:nonzero;fill:rgb(25.490198%,59.215689%,99.607843%);fill-opacity:1;" d="M 767 812.5 C 768.230469 813.570312 768.84375 814.347656 769 816 C 768.503906 816.742188 768.503906 816.742188 768 817.5 C 767.867188 816.941406 767.730469 816.386719 767.59375 815.8125 C 767.171875 813.890625 767.171875 813.890625 765.5 813 C 765.996094 812.835938 766.488281 812.671875 767 812.5 Z M 767 812.5 " />
                 </g>
             </svg>
-
         </div>
 
         <!-- Right div for form -->
-        <div class="form-right">
-            <form class="form-detail" action="#" method="post" id="myform">
-                <h2>General Information</h2>
-                <div class="form-row">
-                    <select name="title">
-                        <option class="option" value="title">Title</option>
-                        <option class="option" value="businessman">Businessman</option>
-                        <option class="option" value="reporter">Reporter</option>
-                        <option class="option" value="secretary">Secretary</option>
-                    </select>
-                </div>
-
-                <div class="form-group d-flex">
-                    <div class="form-row form-row-1">
-                        <input type="text" name="first_name" id="first_name" class="input-text" placeholder="First Name" required="">
+        <div class="form-right" id="formContainer">
+            <!-- Registration Form -->
+            <div id="registrationForm">
+                <form class="form-detail" action="#" method="post" id="myform">
+                    <h2>General Information</h2>
+                    <div class="form-row">
+                        <label for="street">User name</label>
+                        <input type="text" name="street" class="street" id="street" placeholder="User name" required="">
                     </div>
-                    <div class="form-row form-row-2">
-                        <input type="text" name="last_name" id="last_name" class="input-text" placeholder="Last Name" required="">
+
+                    <div class="form-group d-flex">
+                        <div class="form-row form-row-1">
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name" id="first_name" class="input-text" placeholder="First Name" required="">
+                        </div>
+                        <div class="form-row form-row-2">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" class="input-text" placeholder="Last Name" required="">
+                        </div>
                     </div>
-                </div>
 
-                <h2>Contact Details</h2>
-
-                <div class="form-row">
-                    <input type="text" name="street" class="street" id="street" placeholder="Street + Nr" required="">
-                </div>
-                <div class="form-row">
-                    <input type="text" name="additional" class="additional" id="additional" placeholder="Additional Information" required="">
-                </div>
-
-                <div class="form-row">
-                    <select name="country">
-                        <option value="country">Country</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="India">India</option>
-                    </select>
-                </div>
-
-                <div class="form-group d-flex">
-                    <div class="form-row form-row-1">
-                        <input type="text" name="code" class="code" id="code" placeholder="Code +" required="">
+                    <div class="form-row">
+                        <label for="gender">Gender</label>
+                        <select name="Gender" id="gender">
+                            <option class="option" value="0" selected>Select</option>
+                            <option class="option" value="Male">Male</option>
+                            <option class="option" value="Female">Female</option>
+                            <option class="option" value="Other">Other</option>
+                        </select>
                     </div>
-                    <div class="form-row form-row-2">
-                        <input type="text" name="phone" class="phone" id="phone" placeholder="Phone Number" required="">
+
+                    <div class="form-row">
+                        <label for="additional">Phone No.</label>
+                        <input type="text" name="additional" class="additional" id="additional" placeholder="Phone No." required="">
                     </div>
-                </div>
 
-                <div class="form-row">
-                    <input type="text" name="your_email" id="your_email" class="input-text" required="" pattern="[^@@]+@@[^@@]+.[a-zA-Z]{2,6}" placeholder="Your Email">
-                </div>
+                    <div class="form-row">
+                        <label for="your_email">Your Email</label>
+                        <input type="text" name="your_email" id="your_email" class="input-text" required="" pattern="[^@@]+@@[^@@]+.[a-zA-Z]{2,6}" placeholder="Your Email">
+                    </div>
 
-                <div class="form-checkbox">
-                    <label class="container">
-                        <input type="checkbox" name="checkbox">
-                        <p>I do accept the <a href="#" class="text">Terms and Conditions</a> of your site.</p>
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
+                    <div class="form-group d-flex">
+                        <div class="form-row form-row-1">
+                            <label for="code">Password</label>
+                            <input type="text" name="code" class="code" id="code" placeholder="Password" required="">
+                        </div>
+                        <div class="form-row form-row-2">
+                            <label for="phone">Confirm Password</label>
+                            <input type="text" name="phone" class="phone" id="phone" placeholder="Confirm Password" required="">
+                        </div>
+                    </div>
 
-                <div class="form-row-last">
-                    <input type="submit" name="register" class="register" value="Register Badge">
-                </div>
+                    <div class="form-checkbox">
+                        <label class="container">
+                            <input type="checkbox" name="checkbox">
+                            <p>I do accept the <a href="#" class="text">Terms and Conditions</a> of your site.</p>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
 
-                <div class="form-row-last">
-                    <input type="submit" name="login" class="form-login" value="Login">
-                </div>
-            </form>
+
+                    <div class="form-row-last">
+                        <input type="submit" name="register" class="register" value="Register Badge">
+                    </div>
+
+                    <div class="form-row-last">
+                        <p>Already have an account? <a href="#" id="showLoginForm">Login</a></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" style="display:none;">
+                <form class="form-detail" action="#" method="post" id="loginFormDetail">
+                    <h2>Login</h2>
+                    <div class="form-row">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" class="input-text" placeholder="Username" required="">
+                    </div>
+                    <div class="form-row">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="input-text" placeholder="Password" required="">
+                    </div>
+                    <div class="form-row-last">
+                        <input type="submit" name="login" class="form-login" value="Login">
+                    </div>
+
+                    <div class="form-row-last">
+                        <p>Don't have an account? <a href="#" id="showRegistrationForm">Register</a></p>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-detail">
+                    <div class="form-row">
+                        <label for="modal-username">Username</label>
+                        <input type="text" name="username" id="modal-username" class="input-text" placeholder="Username" required="">
+                    </div>
+                    <div class="form-row">
+                        <label for="modal-password">Password</label>
+                        <input type="password" name="password" id="modal-password" class="input-text" placeholder="Password" required="">
+                    </div>
+                    <div class="form-row-last">
+                        <input type="submit" class="form-login" value="Login">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById('showLoginForm').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('registrationForm').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+    });
+
+    document.getElementById('showRegistrationForm').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registrationForm').style.display = 'block';
+    });
+
+    // Modal functionality for login
+    function openLoginModal() {
+        $('#loginModal').modal('show');
+    }
+
+</script>
