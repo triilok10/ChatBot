@@ -1,0 +1,188 @@
+﻿@{
+    ViewData["Title"] = "APIDocumentation";
+}
+
+
+<style>
+
+
+    h1.display-4 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #2d2d2d;
+    }
+
+    h2 {
+        color: #333;
+        margin-top: 30px;
+    }
+
+    h3 {
+        color: #2d2d2d;
+        margin-top: 20px;
+    }
+
+    p, pre {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .api-endpoint {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    code {
+        font-size: 1.1rem;
+        background-color: #e9ecef;
+        padding: 3px 8px;
+        border-radius: 4px;
+    }
+
+    pre {
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+
+
+    img.img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    @@media (max-width: 767px) {
+
+        .row {
+            flex-direction: column-reverse;
+        }
+
+        .col-md-7, .col-lg-7 {
+            width: 100%;
+        }
+
+        .col-md-5, .col-lg-5 {
+            width: 100%;
+        }
+    }
+
+</style>
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <!-- Content Area (65-70%) -->
+        <div class="col-md-7 col-lg-7">
+            <h1 class="display-4">API Documentation</h1>
+            <p class="lead">
+                Welcome to the API documentation for **Apna AI**. This documentation provides details on how to interact
+                with the AI backend, which can be integrated into your applications to leverage the capabilities of
+                conversational AI for your needs.
+            </p>
+            <h2>Base URL</h2>
+            <p>
+                The base URL for accessing Apna AI API is:
+                <code>https://api.apna-ai.com</code>
+            </p>
+
+            <h2>Endpoints</h2>
+            <p>Below are the available API endpoints you can use to integrate with Apna AI:</p>
+
+            <div class="api-endpoint">
+                <h3>1. Query AI</h3>
+                <p><strong>POST</strong> <code>/api/v1/query</code></p>
+                <p>This endpoint allows you to send a query to Apna AI and receive a response. It supports natural language queries.</p>
+
+                <h4>Example Request:</h4>
+                <pre>
+{
+    "query": "What is the capital of France?"
+}
+                </pre>
+
+                <h4>Example Response:</h4>
+                <pre>
+{
+    "response": "The capital of France is Paris."
+}
+                </pre>
+            </div>
+
+            <div class="api-endpoint">
+                <h3>2. Get Available Endpoints</h3>
+                <p><strong>GET</strong> <code>/api/v1/endpoints</code></p>
+                <p>Fetch a list of all available API endpoints and their descriptions.</p>
+
+                <h4>Example Request:</h4>
+                <pre>
+GET /api/v1/endpoints
+                </pre>
+
+                <h4>Example Response:</h4>
+                <pre>
+{
+    "endpoints": [
+        {
+            "method": "POST",
+            "url": "/api/v1/query",
+            "description": "Submit a query to the AI."
+        },
+        {
+            "method": "GET",
+            "url": "/api/v1/endpoints",
+            "description": "Retrieve a list of all API endpoints."
+        }
+    ]
+}
+                </pre>
+            </div>
+
+            <div class="api-endpoint">
+                <h3>3. Get AI Version</h3>
+                <p><strong>GET</strong> <code>/api/v1/version</code></p>
+                <p>Retrieve the current version of the Apna AI API.</p>
+
+                <h4>Example Request:</h4>
+                <pre>
+GET /api/v1/version
+                </pre>
+
+                <h4>Example Response:</h4>
+                <pre>
+{
+    "version": "1.0.0"
+}
+                </pre>
+            </div>
+
+            <h2>Authentication</h2>
+            <p>All requests to the API require an API key, which can be obtained by registering on the Apna AI platform. Include your API key in the request header:</p>
+            <pre>
+Authorization: Bearer YOUR_API_KEY
+            </pre>
+            <p>If you don't have an API key, you can request one by signing up on the Apna AI platform.</p>
+
+            <h2>Error Handling</h2>
+            <p>In case of an error, the API will return the following response format:</p>
+            <pre>
+{
+    "error": "Invalid API key",
+    "message": "The provided API key is invalid or expired."
+}
+            </pre>
+        </div>
+
+        <!-- SVG Image Area (30-35%) -->
+        <div class="col-md-5 col-lg-5 text-center">
+            <img src="~/images/apna-ai-api.svg" alt="API Icon" class="img-fluid" />
+        </div>
+    </div>
+</div>
+
+
