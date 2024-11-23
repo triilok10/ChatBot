@@ -13,5 +13,10 @@ namespace ChatBot.Controllers
         {
             return View();
         }
+
+        public PartialViewResult _TermsCondition()
+        {
+            return PartialView();
+        }
     }
 }

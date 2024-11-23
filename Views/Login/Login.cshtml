@@ -151,34 +151,6 @@
         }
     }
 
-    .form-checkbox {
-        display: flex; 
-        align-items: center;
-        margin-bottom: 15px; 
-    }
-
-        .form-checkbox label {
-            display: flex;
-            align-items: center;
-        }
-
-        .form-checkbox input[type="checkbox"] {
-            margin-right: 10px;
-        }
-
-        .form-checkbox p {
-            margin: 0; 
-            font-size: 14px; 
-        }
-
-        .form-checkbox .text {
-            color: #007bff;
-        }
-
-            .form-checkbox .text:hover {
-                text-decoration: underline; 
-            }
-
 </style>
 
 <div class="container-fluid" style="padding:0px;">
@@ -389,9 +361,7 @@
 
                     <div class="form-checkbox">
                         <label class="container">
-                            <input type="checkbox" name="checkbox">
-                            <p>I do accept the <a href="#" class="text">Terms and Conditions</a> of your site.</p>
-                            <span class="checkmark"></span>
+                            <p>I do accept the <a class="text" onclick="js_PartialTermsCondition();">Terms and Conditions</a> of your site.</p>
                         </label>
                     </div>
 
@@ -459,6 +429,8 @@
         </div>
     </div>
 </div>
+<div class="modalPartial" id="TCModalPartial" tabindex="-1" role="dialog">
+</div>
 
 <script type="text/javascript">
     document.getElementById('showLoginForm').addEventListener('click', function (e) {
@@ -478,4 +450,26 @@
         $('#loginModal').modal('show');
     }
 
+
+
+
+    function js_PartialTermsCondition() {
+
+        $.ajax({
+            url: "@Url.Action("_TermsCondition", "Login")",
+            type: "GET",
+            cache: false,
+            success: function (res) {
+                if (res != "") {
+                    $('.modal').modal('hide');
+                    $('.form-container').hide('show');
+                    $("#TCModalPartial").html(res).slideDown();
+                }
+            },
+            error: function (err) {
+
+            }
+        })
+
+    }
 </script>
