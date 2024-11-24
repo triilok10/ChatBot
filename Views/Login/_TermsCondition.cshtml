@@ -24,6 +24,25 @@
             color: #007bff;
         }
 
+    .close-button {
+        padding: 15px 30px;
+        background-color: #ff2500;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .close-button:hover {
+            background-color: white;
+            color: #007bff;
+        }
+
+
+    .TermsManage {
+        display: none;
+    }
+
     .AcceptBtn {
         margin-top: 15px;
     }
@@ -450,9 +469,24 @@
                 </div>
 
                 <div class="form-row-last text-center AcceptBtn">
-                    <button href="#" class="connect-button">Accept Terms</button>
+                    <input type="hidden" id="hdnAcceptTerm" value="1" />
+                    <button href="#" class="connect-button" id="AcceptTerms" onclick="js_AcceptTerms();">Accept Terms</button>
+                    <button href="#" class="close-button" id="closeAcceptTerms" onclick="js_CloseTerms();">Close</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var hdnAcceptVal = '@ViewBag.hdnAcceptVal';
+
+
+        if (hdnAcceptVal === "1") {
+            $("#AcceptTerms").css('display', 'none');
+        } else if (hdnAcceptVal === "0") {
+            $("#closeAcceptTerms").css('display', 'none');
+        }
+    });
+</script>

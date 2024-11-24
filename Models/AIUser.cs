@@ -40,6 +40,7 @@ namespace ChatBot.Models
         public int? AIUserNotificationID { get; set; }
         //IsNotificationSend
         public bool? IsNotificationSend { get; set; }
+        public bool? TermsCondition { get; set; }
 
 
         public enum GenderType

@@ -34,8 +34,18 @@ namespace ChatBot.Controllers
         }
         #endregion
 
-        public PartialViewResult _TermsCondition()
+        public PartialViewResult _TermsCondition(string hdnAcceptValue)
         {
+            if (!string.IsNullOrWhiteSpace(hdnAcceptValue))
+            {
+                ViewBag.hdnAcceptValue = hdnAcceptValue;
+                ViewBag.hdnAcceptVal = 1;
+            }
+            else
+            {
+                ViewBag.hdnAcceptValue = 0;
+                ViewBag.hdnAcceptVal = 0;
+            }
             return PartialView();
         }
     }

@@ -321,7 +321,8 @@
                     <div class="form-row">
                         <label asp-for="UserName">User name</label>
                         @Html.AntiForgeryToken()
-                        <input asp-for="UserName" type="text" class="street" id="UserName" placeholder="User name">
+                        <input asp-for="UserName" type="text" class="input-text" id="UserName" placeholder="User name" required>
+                        <span id="username-error" style="color: red; display: none;">Only letters, numbers, and underscores are allowed.</span>
                     </div>
 
                     <div class="form-group d-flex">
@@ -348,7 +349,7 @@
 
                     <div class="form-row">
                         <label asp-for="PhoneNo">Phone No.</label>
-                        <input asp-for="PhoneNo" type="text" class="additional" id="PhoneNo" placeholder="Phone No.">
+                        <input asp-for="PhoneNo" type="number" class="input-text" id="PhoneNo" placeholder="Phone No." maxlength="10">
                     </div>
 
                     <div class="form-row">
@@ -359,11 +360,11 @@
                     <div class="form-group d-flex">
                         <div class="form-row form-row-1">
                             <label asp-for="Password">Password</label>
-                            <input asp-for="Password" type="text" class="code" id="Password" placeholder="Password">
+                            <input asp-for="Password" type="text" class="input-text" id="Password" placeholder="Password">
                         </div>
                         <div class="form-row form-row-2">
                             <label asp-for="ConfirmPassword">Confirm Password</label>
-                            <input asp-for="ConfirmPassword" type="text" class="phone" id="ConfirmPassword" placeholder="Confirm Password">
+                            <input asp-for="ConfirmPassword" type="text" class="input-text" id="ConfirmPassword" placeholder="Confirm Password">
                         </div>
                     </div>
 
@@ -375,7 +376,7 @@
 
 
                     <div class="form-row-last">
-                        <input type="submit" name="register" class="register" value="Register Badge">
+                        <input type="submit" name="register" class="register" id="register" value="Register Badge">
                     </div>
 
                     <div class="form-row-last">
@@ -403,6 +404,7 @@
                     <div class="form-row-last">
                         <p>Don't have an account? <a href="#" id="showRegistrationForm">Register</a></p>
                     </div>
+                    <input type="hidden" asp-for="TermsCondition" id="TermsCondition" value="">
                 </form>
             </div>
         </div>
@@ -459,13 +461,87 @@
     }
 
 
+    //Code to Stip the Special Character and Space for UserName
+    document.addEventListener("DOMContentLoaded", function () {
+        const userNameInput = document.getElementById("UserName");
+        const errorMessage = document.getElementById("username-error");
+        const registerButton = document.getElementById("register");
+
+        // Function to validate input
+        function validateInput(event) {
+            const regex = /^[a-zA-Z0-9_]*$/;
+            const value = event.target.value;
+
+            if (!regex.test(value)) {
+                errorMessage.style.display = "inline";
+                event.target.setCustomValidity("Invalid input");
+            } else {
+                errorMessage.style.display = "none";
+                event.target.setCustomValidity("");
+            }
+        }
+
+        // Event listener for keypress
+        userNameInput.addEventListener("keypress", function (event) {
+            const char = String.fromCharCode(event.which);
+            if (!/^[a-zA-Z0-9_]$/.test(char)) {
+                event.preventDefault();
+                errorMessage.style.display = "inline";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        });
+
+        // Event listener for paste events
+        userNameInput.addEventListener("paste", function (event) {
+            const clipboardData = event.clipboardData || window.clipboardData;
+            const pastedData = clipboardData.getData('Text');
+
+            if (!/^[a-zA-Z0-9_]*$/.test(pastedData)) {
+                event.preventDefault();
+                errorMessage.style.display = "inline";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        });
+
+
+        userNameInput.addEventListener("input", validateInput);
+
+
+        registerButton.addEventListener("click", function () {
+
+            if (userNameInput.value.trim() == "") {
+                $("#UserName").addClass("border-danger");
+                toastr.error("Please enter the Username");
+                return;
+            } else {
+                $("#UserName").removeClass("border-danger");
+            }
+
+
+        });
+    });
+
+
 
 
     function js_PartialTermsCondition() {
 
+        var acceptterms = $("#hdnAcceptTerm").val();
+
+
+        if (acceptterms == 1) {
+
+
+            $("#AcceptTerms").css('display', 'none');
+            $("#closeAcceptTerms").css('display', 'block');
+        }
+
         $.ajax({
             url: "@Url.Action("_TermsCondition", "Login")",
             type: "GET",
+            data: { hdnAcceptValue: acceptterms },
             cache: false,
             success: function (res) {
                 if (res != "") {
@@ -488,9 +564,11 @@
         var lastName = $("#LastName").val().trim();
         var emailID = $("#EmailID").val().trim();
         var phoneNo = $("#PhoneNo").val().trim();
+        var phoneNo = $("#PhoneNo").val().trim().length;
         var gender = $("#Gender").val();
         var password = $("#Password").val().trim();
         var confirmPassword = $("#ConfirmPassword").val().trim();
+        var termsCondition = $("#TermsCondition").val();
 
 
         debugger;
@@ -498,13 +576,13 @@
         var firstInvalidField = null;
 
         // Username validation
-        if (!username) {
-            $("#UserName").addClass("border-danger");
-            toastr.error("Please enter the Username");
-            if (!firstInvalidField) firstInvalidField = $("#UserName");
-        } else {
-            $("#UserName").removeClass("border-danger");
-        }
+        // if (!username) {
+        //     $("#UserName").addClass("border-danger");
+        //     toastr.error("Please enter the Username");
+        //     if (!firstInvalidField) firstInvalidField = $("#UserName");
+        // } else {
+        //     $("#UserName").removeClass("border-danger");
+        // }
 
         // First Name validation
         if (!firstName) {
@@ -513,15 +591,6 @@
             if (!firstInvalidField) firstInvalidField = $("#FirstName");
         } else {
             $("#FirstName").removeClass("border-danger");
-        }
-
-        // Last Name validation
-        if (!lastName) {
-            $("#LastName").addClass("border-danger");
-            toastr.error("Please enter the Last Name");
-            if (!firstInvalidField) firstInvalidField = $("#LastName");
-        } else {
-            $("#LastName").removeClass("border-danger");
         }
 
         // Email ID validation
@@ -537,6 +606,14 @@
         if (!phoneNo) {
             $("#PhoneNo").addClass("border-danger");
             toastr.error("Please enter the Phone No.");
+            if (!firstInvalidField) firstInvalidField = $("#PhoneNo");
+        } else {
+            $("#PhoneNo").removeClass("border-danger");
+        }
+        //Phone No Length Validation
+        if (phoneNo != 10) {
+            $("#PhoneNo").addClass("border-danger");
+            toastr.error("Please enter the 10 digit Phone No.");
             if (!firstInvalidField) firstInvalidField = $("#PhoneNo");
         } else {
             $("#PhoneNo").removeClass("border-danger");
@@ -581,6 +658,11 @@
             return false; // Prevent form submission
         }
 
+        if (termsCondition === false || termsCondition === "") {
+            toastr.error("Please read the Terms and Condition");
+            return false;
+        }
+
         // If everything is valid, allow form submission
         return true;
     }
@@ -616,5 +698,31 @@
 
         return !firstInvalidField;
     }
+
+
+    //To Accept the Terms and Condition
+    function js_AcceptTerms() {
+
+        var acceptterms = $("#hdnAcceptTerm").val().trim();
+
+        if (acceptterms == 1) {
+            document.getElementById("TermsCondition").value = true;
+            $(".terms-container").hide();
+            $(".form-container").show();
+        }
+    }
+
+    //To close the Terms and Condition
+    function js_CloseTerms() {
+
+        var acceptterms = $("#hdnAcceptTerm").val().trim();
+
+        if (acceptterms == 1) {
+            $(".terms-container").hide();
+            $(".form-container").show();
+        }
+    }
+
+
 
 </script>
