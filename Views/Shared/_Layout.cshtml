@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ChatBot.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body style="user-select:none;">
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container-fluid">
@@ -148,24 +148,24 @@
         }
 
         .login-button {
-            padding: 8px 16px; 
-            border-radius: 5px; 
-            background-color: #007bff; 
-            color: white; 
-            font-weight: 600; 
-            text-decoration: none; 
-            display: inline-block; 
-            transition: background 0.3s ease, box-shadow 0.3s ease; 
+            padding: 8px 16px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
             .login-button:hover {
-                background: linear-gradient(135deg, #007bff, #0056b3); 
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-                text-decoration: none; 
+                background: linear-gradient(135deg, #007bff, #0056b3);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                text-decoration: none;
             }
 
             .login-button:focus {
-                outline: none; 
+                outline: none;
             }
 
     </style>
@@ -173,6 +173,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <link href="~/js/toastr.min.css" rel="stylesheet" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,4 +1,6 @@
-﻿namespace ChatBot.Models
+﻿using NuGet.Protocol.Plugins;
+
+namespace ChatBot.Models
 {
     public class AIUser
     {
@@ -6,8 +8,8 @@
         public int AIUserID { get; set; }
         //UserName
         public string UserName { get; set; }
-        //MobileNo
-        public string MobileNo { get; set; }
+        //PhoneNo
+        public string PhoneNo { get; set; }
         //EmailID
         public string EmailID { get; set; }
         //TimeStamp
@@ -16,12 +18,16 @@
         public bool Active { get; set; }
         //AIUserInfoID
         public int AIUserInfoID { get; set; }
-        //Name
-        public string Name { get; set; }
+        //First Name
+        public string FirstName { get; set; }
+        //Last Name
+        public string LastName { get; set; }
         //Password
         public string Password { get; set; }
+        //Confirm Password
+        public string ConfirmPassword { get; set; }
         //Gender
-        public int Gender { get; set; }
+        public GenderType Gender { get; set; }
         //Latitude
         public string Latitude { get; set; }
         //Longitude
@@ -34,5 +40,13 @@
         public int AIUserNotificationID { get; set; }
         //IsNotificationSend
         public bool IsNotificationSend { get; set; }
+
+
+        public enum GenderType
+        {
+            Male,
+            Female,
+            Other
+        }
     }
 }

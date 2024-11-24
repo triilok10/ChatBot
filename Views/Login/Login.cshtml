@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ChatBot.Models.AIUser;
+@{
     ViewData["Title"] = "Login";
 }
 
@@ -22,10 +23,14 @@
         align-self: end;
     }
 
-        .form-left svg {
-            width: 100%;
-            height: auto;
-        }
+    .border-Danger {
+        border-color: red;
+    }
+
+    .form-left svg {
+        width: 100%;
+        height: auto;
+    }
 
     .form-right {
         flex: 0 0 60%;
@@ -310,52 +315,54 @@
         <div class="form-right" id="formContainer">
             <!-- Registration Form -->
             <div id="registrationForm">
-                <form class="form-detail" action="#" method="post" id="myform">
+                <form asp-controller="RegistrationSubmit" asp-for="Login" class="form-detail" method="post" id="myform" onsubmit="return js_ValidateRegister();">
                     <h2>General Information</h2>
                     <div class="form-row">
-                        <label for="street">User name</label>
-                        <input type="text" name="street" class="street" id="street" placeholder="User name" required="">
+                        <label asp-for="UserName">User name</label>
+                        @Html.AntiForgeryToken()
+                        <input asp-for="UserName" type="text" class="street" id="UserName" placeholder="User name">
                     </div>
 
                     <div class="form-group d-flex">
                         <div class="form-row form-row-1">
-                            <label for="first_name">First Name</label>
-                            <input type="text" name="first_name" id="first_name" class="input-text" placeholder="First Name" required="">
+                            <label asp-for="FirstName">First Name</label>
+                            <input asp-for="FirstName" type="text" id="FirstName" class="input-text" placeholder="First Name">
                         </div>
                         <div class="form-row form-row-2">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" class="input-text" placeholder="Last Name" required="">
+                            <label asp-for="LastName">Last Name</label>
+                            <input asp-for="LastName" type="text" id="LastName" class="input-text" placeholder="Last Name">
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <label for="gender">Gender</label>
-                        <select name="Gender" id="gender">
-                            <option class="option" value="0" selected>Select</option>
-                            <option class="option" value="Male">Male</option>
-                            <option class="option" value="Female">Female</option>
-                            <option class="option" value="Other">Other</option>
+                        <label asp-for="Gender">Gender</label>
+                        <select asp-for="Gender" id="Gender">
+                            @* <option class="option" value="" selected>Select</option> *@
+                            @foreach (var item in Enum.GetValues(typeof(ChatBot.Models.AIUser.GenderType)))
+                            {
+                                <option class="option" value="@item" selected>@item</option>
+                            }
                         </select>
                     </div>
 
                     <div class="form-row">
-                        <label for="additional">Phone No.</label>
-                        <input type="text" name="additional" class="additional" id="additional" placeholder="Phone No." required="">
+                        <label asp-for="PhoneNo">Phone No.</label>
+                        <input asp-for="PhoneNo" type="text" class="additional" id="PhoneNo" placeholder="Phone No.">
                     </div>
 
                     <div class="form-row">
-                        <label for="your_email">Your Email</label>
-                        <input type="text" name="your_email" id="your_email" class="input-text" required="" pattern="[^@@]+@@[^@@]+.[a-zA-Z]{2,6}" placeholder="Your Email">
+                        <label asp-for="EmailID">Your Email</label>
+                        <input asp-for="EmailID" type="text" id="EmailID" class="input-text" pattern="[^@@]+@@[^@@]+.[a-zA-Z]{2,6}" placeholder="Your Email">
                     </div>
 
                     <div class="form-group d-flex">
                         <div class="form-row form-row-1">
-                            <label for="code">Password</label>
-                            <input type="text" name="code" class="code" id="code" placeholder="Password" required="">
+                            <label asp-for="Password">Password</label>
+                            <input asp-for="Password" type="text" class="code" id="Password" placeholder="Password">
                         </div>
                         <div class="form-row form-row-2">
-                            <label for="phone">Confirm Password</label>
-                            <input type="text" name="phone" class="phone" id="phone" placeholder="Confirm Password" required="">
+                            <label asp-for="ConfirmPassword">Confirm Password</label>
+                            <input asp-for="ConfirmPassword" type="text" class="phone" id="ConfirmPassword" placeholder="Confirm Password">
                         </div>
                     </div>
 
@@ -381,12 +388,12 @@
                 <form class="form-detail" action="#" method="post" id="loginFormDetail">
                     <h2>Login</h2>
                     <div class="form-row">
-                        <label for="username">Username</label>
-                        <input type="text" name="username" id="username" class="input-text" placeholder="Username" required="">
+                        <label asp-for="UserName">Username</label>
+                        <input type="text" asp-for="UserName" id="LoginUserName" class="input-text" placeholder="Username">
                     </div>
                     <div class="form-row">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" class="input-text" placeholder="Password" required="">
+                        <label asp-for="Password">Password</label>
+                        <input type="password" asp-for="Password" id="LoginPassword" class="input-text" placeholder="Password">
                     </div>
                     <div class="form-row-last">
                         <input type="submit" name="login" class="form-login" value="Login">
@@ -415,11 +422,11 @@
                 <form class="form-detail">
                     <div class="form-row">
                         <label for="modal-username">Username</label>
-                        <input type="text" name="username" id="modal-username" class="input-text" placeholder="Username" required="">
+                        <input type="text" name="username" id="modal-username" class="input-text" placeholder="Username">
                     </div>
                     <div class="form-row">
                         <label for="modal-password">Password</label>
-                        <input type="password" name="password" id="modal-password" class="input-text" placeholder="Password" required="">
+                        <input type="password" name="password" id="modal-password" class="input-text" placeholder="Password">
                     </div>
                     <div class="form-row-last">
                         <input type="submit" class="form-login" value="Login">
@@ -472,4 +479,93 @@
         })
 
     }
+
+
+    function js_ValidateRegister() {
+        var username = $("#UserName").val();
+        var firstName = $("#FirstName").val();
+        var lastName = $("#LastName").val();
+        var emailID = $("#EmailID").val();
+        var phoneNo = $("#PhoneNo").val();
+        var gender = $("#Gender").val();
+        var password = $("#Password").val();
+        var confirmPassword = $("#ConfirmPassword").val();
+
+        if (!username) {
+            $("#Username").addClass("border-danger");
+            toastr.error("Please enter the Username");
+            return false;
+        } else {
+            $("#Username").removeClass("border-danger");
+        }
+
+        if (!firstName) {
+            $("#FirstName").addClass("border-Danger");
+            toastr.error("Please enter the First Name");
+            return false;
+        } else {
+            $("#FirstName").removeClass("border-Danger");
+        }
+
+
+        if (!lastName) {
+            $("#LastName").addClass("border-Danger");
+            toastr.error("Please enter the Last Name");
+            return false;
+        } else {
+            $("#LastName").removeClass("border-Danger");
+        }
+
+
+        if (!emailID) {
+            $("#EmailID").addClass("border-Danger");
+            toastr.error("Please enter the Email ID");
+            return false;
+        } else {
+            $("#EmailID").removeClass("border-Danger");
+        }
+
+
+        if (!phoneNo) {
+            $("#PhoneNo").addClass("border-Danger");
+            toastr.error("Please enter the Phone No.");
+            return false;
+        } else {
+            $("#PhoneNo").removeClass("border-Danger");
+        }
+
+
+        if (!gender) {
+            $("#Gender").addClass("border-Danger");
+            toastr.error("Please select the Gender");
+            return false;
+        } else {
+            $("#Gender").removeClass("border-Danger");
+        }
+
+
+        if (!password) {
+            $("#Password").addClass("border-Danger");
+            toastr.error("Please enter the Password");
+            return false;
+        } else {
+            $("#Password").removeClass("border-Danger");
+        }
+
+        if (!confirmPassword) {
+            $("#ConfirmPassword").addClass("border-Danger");
+            toastr.error("Please enter the Confirm Password");
+            return false;
+        } else {
+            $("#ConfirmPassword").removeClass("border-Danger");
+        }
+
+        if (password != confirmPassword) {
+            toastr.error("Password and Confirm Password must be same!");
+        }
+
+
+        return true;
+    }
+
 </script>
