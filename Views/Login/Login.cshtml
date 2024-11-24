@@ -482,14 +482,14 @@
 
 
     function js_ValidateRegister() {
-        var username = $("#UserName").val();
-        var firstName = $("#FirstName").val();
-        var lastName = $("#LastName").val();
-        var emailID = $("#EmailID").val();
-        var phoneNo = $("#PhoneNo").val();
-        var gender = $("#Gender").val();
-        var password = $("#Password").val();
-        var confirmPassword = $("#ConfirmPassword").val();
+        var username = $("#UserName").val().trim();
+        var firstName = $("#FirstName").val().trim();
+        var lastName = $("#LastName").val().trim();
+        var emailID = $("#EmailID").val().trim();
+        var phoneNo = $("#PhoneNo").val().trim();
+        var gender = $("#Gender").val().trim();
+        var password = $("#Password").val().trim();
+        var confirmPassword = $("#ConfirmPassword").val().trim();
 
         if (!username) {
             $("#Username").addClass("border-danger");
