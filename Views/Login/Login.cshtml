@@ -3,7 +3,7 @@
     ViewData["Title"] = "Login";
 }
 
-<style>
+<style type="text/css">
     /* Common Styles */
     .form-container {
         display: flex;
@@ -23,9 +23,10 @@
         align-self: end;
     }
 
-    .border-Danger {
-        border-color: red;
+    .border-danger {
+        border-color: red !important;
     }
+
 
     .form-left svg {
         width: 100%;
@@ -315,7 +316,7 @@
         <div class="form-right" id="formContainer">
             <!-- Registration Form -->
             <div id="registrationForm">
-                <form asp-controller="RegistrationSubmit" asp-for="Login" class="form-detail" method="post" id="myform" onsubmit="return js_ValidateRegister();">
+                <form asp-controller="Login" asp-action="RegistrationSubmit" class="form-detail" method="post" id="myform" onsubmit="return js_ValidateRegister();">
                     <h2>General Information</h2>
                     <div class="form-row">
                         <label asp-for="UserName">User name</label>
@@ -337,7 +338,7 @@
                     <div class="form-row">
                         <label asp-for="Gender">Gender</label>
                         <select asp-for="Gender" id="Gender">
-                            @* <option class="option" value="" selected>Select</option> *@
+                            <option value="0">Select Gender</option>
                             @foreach (var item in Enum.GetValues(typeof(ChatBot.Models.AIUser.GenderType)))
                             {
                                 <option class="option" value="@item" selected>@item</option>
@@ -385,7 +386,7 @@
 
             <!-- Login Form -->
             <div id="loginForm" style="display:none;">
-                <form class="form-detail" action="#" method="post" id="loginFormDetail">
+                <form class="form-detail" action="#" method="post" id="loginFormDetail" onsubmit="return js_ValidateLogin();">
                     <h2>Login</h2>
                     <div class="form-row">
                         <label asp-for="UserName">Username</label>
@@ -487,85 +488,133 @@
         var lastName = $("#LastName").val().trim();
         var emailID = $("#EmailID").val().trim();
         var phoneNo = $("#PhoneNo").val().trim();
-        var gender = $("#Gender").val().trim();
+        var gender = $("#Gender").val();
         var password = $("#Password").val().trim();
         var confirmPassword = $("#ConfirmPassword").val().trim();
 
+
+        debugger;
+        // Track the first invalid field for scrolling
+        var firstInvalidField = null;
+
+        // Username validation
         if (!username) {
-            $("#Username").addClass("border-danger");
+            $("#UserName").addClass("border-danger");
             toastr.error("Please enter the Username");
-            return false;
+            if (!firstInvalidField) firstInvalidField = $("#UserName");
         } else {
-            $("#Username").removeClass("border-danger");
+            $("#UserName").removeClass("border-danger");
         }
 
+        // First Name validation
         if (!firstName) {
-            $("#FirstName").addClass("border-Danger");
+            $("#FirstName").addClass("border-danger");
             toastr.error("Please enter the First Name");
-            return false;
+            if (!firstInvalidField) firstInvalidField = $("#FirstName");
         } else {
-            $("#FirstName").removeClass("border-Danger");
+            $("#FirstName").removeClass("border-danger");
         }
 
-
+        // Last Name validation
         if (!lastName) {
-            $("#LastName").addClass("border-Danger");
+            $("#LastName").addClass("border-danger");
             toastr.error("Please enter the Last Name");
-            return false;
+            if (!firstInvalidField) firstInvalidField = $("#LastName");
         } else {
-            $("#LastName").removeClass("border-Danger");
+            $("#LastName").removeClass("border-danger");
         }
 
-
+        // Email ID validation
         if (!emailID) {
-            $("#EmailID").addClass("border-Danger");
+            $("#EmailID").addClass("border-danger");
             toastr.error("Please enter the Email ID");
-            return false;
+            if (!firstInvalidField) firstInvalidField = $("#EmailID");
         } else {
-            $("#EmailID").removeClass("border-Danger");
+            $("#EmailID").removeClass("border-danger");
         }
 
-
+        // Phone Number validation
         if (!phoneNo) {
-            $("#PhoneNo").addClass("border-Danger");
+            $("#PhoneNo").addClass("border-danger");
             toastr.error("Please enter the Phone No.");
-            return false;
+            if (!firstInvalidField) firstInvalidField = $("#PhoneNo");
         } else {
-            $("#PhoneNo").removeClass("border-Danger");
+            $("#PhoneNo").removeClass("border-danger");
         }
 
-
-        if (!gender) {
-            $("#Gender").addClass("border-Danger");
+        // Gender validation
+        if (gender === "0" || gender === null) {
+            $("#Gender").addClass("border-danger");
             toastr.error("Please select the Gender");
-            return false;
+            if (!firstInvalidField) firstInvalidField = $("#Gender");
         } else {
-            $("#Gender").removeClass("border-Danger");
+            $("#Gender").removeClass("border-danger");
         }
 
+        // Password validation
+        if (!password) {
+            $("#Password").addClass("border-danger");
+            toastr.error("Please enter the Password");
+            if (!firstInvalidField) firstInvalidField = $("#Password");
+        } else {
+            $("#Password").removeClass("border-danger");
+        }
+
+        // Confirm Password validation
+        if (!confirmPassword) {
+            $("#ConfirmPassword").addClass("border-danger");
+            toastr.error("Please enter the Confirm Password");
+            if (!firstInvalidField) firstInvalidField = $("#ConfirmPassword");
+        } else {
+            $("#ConfirmPassword").removeClass("border-danger");
+        }
+
+        // Confirm Password match check
+        if (password !== confirmPassword) {
+            toastr.error("Password and Confirm Password must be the same!");
+            if (!firstInvalidField) firstInvalidField = $("#Password");
+        }
+
+        // If there is an invalid field, scroll to it and prevent form submission
+        if (firstInvalidField) {
+            firstInvalidField[0].scrollIntoView({ behavior: "smooth", block: "center" });
+            return false; // Prevent form submission
+        }
+
+        // If everything is valid, allow form submission
+        return true;
+    }
+
+
+
+    function js_ValidateLogin() {
+        var username = $("#LoginUserName").val().trim();
+        var password = $("#LoginPassword").val().trim();
+
+        var firstInvalidField = null;
+        if (!username) {
+            $("#LoginUserName").addClass("border-danger");
+            toastr.error("Please enter the Username");
+            if (!firstInvalidField) firstInvalidField = $("#LoginUserName");
+        } else {
+            $("#LoginUserName").removeClass("border-danger");
+        }
 
         if (!password) {
-            $("#Password").addClass("border-Danger");
+            $("#LoginPassword").addClass("border-danger");
             toastr.error("Please enter the Password");
-            return false;
+            if (!firstInvalidField) firstInvalidField = $("#LoginPassword");
+
+
         } else {
-            $("#Password").removeClass("border-Danger");
+            $("#LoginPassword").removeClass("border-danger");
         }
 
-        if (!confirmPassword) {
-            $("#ConfirmPassword").addClass("border-Danger");
-            toastr.error("Please enter the Confirm Password");
-            return false;
-        } else {
-            $("#ConfirmPassword").removeClass("border-Danger");
+        if (firstInvalidField) {
+            firstInvalidField[0].scrollIntoView({ behavior: "smooth", block: "center" });
         }
 
-        if (password != confirmPassword) {
-            toastr.error("Password and Confirm Password must be same!");
-        }
-
-
-        return true;
+        return !firstInvalidField;
     }
 
 </script>

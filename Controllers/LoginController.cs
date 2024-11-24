@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ChatBot.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatBot.Controllers
 {
@@ -13,6 +14,25 @@ namespace ChatBot.Controllers
         {
             return View();
         }
+
+        #region "Submit Registration Form"
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrationSubmit(AIUser pAIUser)
+        {
+            bool res = false;
+            string msg = "";
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("", "");
+        }
+        #endregion
 
         public PartialViewResult _TermsCondition()
         {

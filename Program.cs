@@ -33,7 +33,7 @@ app.Use(async (context, next) =>
     if (context.Request.Method == "POST")
     {
         var origin = context.Request.Headers["Host"].FirstOrDefault();
-        if (!string.IsNullOrEmpty(origin) && origin != "localhost:7254")
+        if (!string.IsNullOrEmpty(origin) && origin != "localhost:7121")
         {
             context.Response.StatusCode = 500;
             await context.Response.WriteAsync("Unauthorized.");

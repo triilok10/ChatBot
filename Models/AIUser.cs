@@ -5,41 +5,41 @@ namespace ChatBot.Models
     public class AIUser
     {
         //AIUserID
-        public int AIUserID { get; set; }
+        public int? AIUserID { get; set; }
         //UserName
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
         //PhoneNo
-        public string PhoneNo { get; set; }
+        public string? PhoneNo { get; set; }
         //EmailID
-        public string EmailID { get; set; }
+        public string? EmailID { get; set; }
         //TimeStamp
-        public DateTime TimeStamp { get; set; }
+        public DateTime? TimeStamp { get; set; }
         //Active
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         //AIUserInfoID
-        public int AIUserInfoID { get; set; }
+        public int? AIUserInfoID { get; set; }
         //First Name
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
         //Last Name
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
         //Password
-        public string Password { get; set; }
+        public string? Password { get; set; }
         //Confirm Password
-        public string ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
         //Gender
-        public GenderType Gender { get; set; }
+        public GenderType? Gender { get; set; }
         //Latitude
-        public string Latitude { get; set; }
+        public string? Latitude { get; set; }
         //Longitude
-        public string Longitude { get; set; }
+        public string? Longitude { get; set; }
         //FCMToken
-        public string FCMToken { get; set; }
+        public string? FCMToken { get; set; }
         //AIUserLoginInfoID
-        public int AIUserLoginInfoID { get; set; }
+        public int? AIUserLoginInfoID { get; set; }
         //AIUserNotificationID
-        public int AIUserNotificationID { get; set; }
+        public int? AIUserNotificationID { get; set; }
         //IsNotificationSend
-        public bool IsNotificationSend { get; set; }
+        public bool? IsNotificationSend { get; set; }
 
 
         public enum GenderType
