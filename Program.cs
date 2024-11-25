@@ -1,10 +1,15 @@
+using ChatBot.AppCode;
 using Microsoft.AspNetCore.Antiforgery;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+//builder.Services.AddScoped<SessionAdmin>();
+//builder.Services.AddScoped<RedirectIfLoggedInAttribute>();
+builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddAntiforgery(options =>
 {
     options.HeaderName = "X-XSRF-TOKEN";
