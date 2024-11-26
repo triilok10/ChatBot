@@ -3,6 +3,8 @@ using ChatBot.AppCode;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace ChatBot.Controllers
 {
@@ -11,7 +13,7 @@ namespace ChatBot.Controllers
 
 
         #region "Constructor"
-
+        //To call the API
         private readonly HttpClient _httpClient;
         private readonly dynamic baseUrl;
         IHttpContextAccessor _httpContextAccessor;
@@ -40,13 +42,23 @@ namespace ChatBot.Controllers
         #region "Submit Registration Form"
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegistrationSubmit(AIUser pAIUser)
+        public async Task<IActionResult> RegistrationSubmit(AIUser pAIUser)
         {
             bool res = false;
             string msg = "";
             try
             {
+                string Url = baseUrl + "api/LoginAPI/RegisterUser";
+                string Json = JsonConvert.SerializeObject(pAIUser);
 
+                StringContent content = new StringContent(Json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _httpClient.PostAsync(Url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                }
             }
             catch (Exception ex)
             {
