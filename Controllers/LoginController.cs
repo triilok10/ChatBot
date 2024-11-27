@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System;
 
 namespace ChatBot.Controllers
 {
@@ -45,7 +46,7 @@ namespace ChatBot.Controllers
         public async Task<IActionResult> RegistrationSubmit(AIUser pAIUser)
         {
             bool res = false;
-            string msg = "";
+            string Message = "";
             try
             {
                 string Url = baseUrl + "api/LoginAPI/RegisterUser";
@@ -53,11 +54,24 @@ namespace ChatBot.Controllers
 
                 StringContent content = new StringContent(Json, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await _httpClient.PostAsync(Url, content);
+                //Checking the AntiFrogery Token
+                var tokenFromForm = Request.Form["__RequestVerificationToken"].FirstOrDefault();
+                if (string.IsNullOrWhiteSpace(tokenFromForm))
+                {
+                    Message = "CSRF token missing.";
+                    TempData["ErrorMessage"] = Message; return RedirectToAction("Contact", "Home");
+                }
+                var request = new HttpRequestMessage(HttpMethod.Post, Url) { Content = content };
+                var antiforgeryCookie = Request.Cookies[".AspNetCore.Antiforgery"];
+                if (!string.IsNullOrWhiteSpace(tokenFromForm)) { request.Headers.Add("X-XSRF-TOKEN", tokenFromForm); }
+                if (!string.IsNullOrWhiteSpace(antiforgeryCookie)) { request.Headers.Add("Cookie", $".AspNetCore.Antiforgery={antiforgeryCookie}"); }
+
+                HttpResponseMessage response = await _httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
-
+                    dynamic responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic responseData = JsonConvert.DeserializeObject<dynamic>(responseBody);
                 }
             }
             catch (Exception ex)

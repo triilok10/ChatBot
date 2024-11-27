@@ -23,7 +23,7 @@ namespace ChatBot.Controllers.API
 
         #region "Register User"
         [HttpPost]
-        public IActionResult RegisterUser(AIUser pAIuser)
+        public IActionResult RegisterUser([FromBody] AIUser pAIuser)
         {
             bool res = false;
             string msg = "";
@@ -31,13 +31,14 @@ namespace ChatBot.Controllers.API
             {
                 AIUser Obj = new AIUser();
 
-                using (SqlConnection con = new SqlConnection())
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
                     con.Open();
                     SqlCommand cmd = new SqlCommand("usp_AIUser", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@Mode", 1);
+                    cmd.Parameters.AddWithValue("@UserName", pAIuser.UserName);
                     cmd.Parameters.AddWithValue("@FirstName", pAIuser.FirstName);
                     cmd.Parameters.AddWithValue("@LastName", pAIuser.LastName);
                     cmd.Parameters.AddWithValue("@EmailID", pAIuser.EmailID);
@@ -56,8 +57,6 @@ namespace ChatBot.Controllers.API
                     return Ok(Obj);
 
                 }
-
-
             }
             catch (Exception ex)
             {

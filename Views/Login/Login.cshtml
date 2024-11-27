@@ -342,7 +342,7 @@
                             <option value="0">Select Gender</option>
                             @foreach (var item in Enum.GetValues(typeof(ChatBot.Models.AIUser.GenderType)))
                             {
-                                <option class="option" value="@item" selected>@item</option>
+                                <option class="option" value="@((int)item)" selected>@item</option>
                             }
                         </select>
                     </div>
