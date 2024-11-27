@@ -5,7 +5,7 @@ namespace ChatBot.Models
     public class AIUser
     {
         //AIUserID
-        public int? AIUserID { get; set; }
+        public int AIUserID { get; set; }
         //UserName
         public string? UserName { get; set; }
         //PhoneNo
@@ -41,6 +41,8 @@ namespace ChatBot.Models
         //IsNotificationSend
         public bool? IsNotificationSend { get; set; }
         public bool? TermsCondition { get; set; }
+        public string? Errmsg { get; set; }
+        public bool? Status { get; set; }
 
 
         public enum GenderType

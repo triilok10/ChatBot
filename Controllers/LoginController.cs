@@ -47,6 +47,8 @@ namespace ChatBot.Controllers
         {
             bool res = false;
             string Message = "";
+            int? UserID = 0;
+            string UserName = "";
             try
             {
                 string Url = baseUrl + "api/LoginAPI/RegisterUser";
@@ -71,7 +73,13 @@ namespace ChatBot.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     dynamic responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic responseData = JsonConvert.DeserializeObject<dynamic>(responseBody);
+                    AIUser obj = JsonConvert.DeserializeObject<AIUser>(responseBody);
+
+                    if (obj.Status == true)
+                    {
+                        _sessionService.SetString("UserName", obj.UserName);
+                        _sessionService.SetInt32("UserID", obj.AIUserID);
+                    }
                 }
             }
             catch (Exception ex)

@@ -27,9 +27,9 @@ namespace ChatBot.Controllers.API
         {
             bool res = false;
             string msg = "";
+            AIUser Obj = new AIUser();
             try
             {
-                AIUser Obj = new AIUser();
 
                 using (SqlConnection con = new SqlConnection(_connectionString))
                 {
@@ -53,6 +53,7 @@ namespace ChatBot.Controllers.API
                             Obj.AIUserID = Convert.ToInt32(rdr["AIUserID"]);
                             Obj.UserName = Convert.ToString(rdr["UserName"]);
                         }
+                        Obj.Status = true;
                     }
                     return Ok(Obj);
 
@@ -62,8 +63,9 @@ namespace ChatBot.Controllers.API
             {
                 msg = ex.Message;
                 res = false;
-
-                return Ok(new { msg, res });
+                Obj.Status = res;
+                Obj.Errmsg = msg;
+                return Ok(Obj);
             }
             #endregion
 
