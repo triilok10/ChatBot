@@ -70,5 +70,48 @@ namespace ChatBot.Controllers.API
             #endregion
 
         }
+
+        [HttpPost]
+        public IActionResult LoginAuthenticate([FromBody] AIUser pAIUser)
+        {
+            string msg = "";
+            bool res = false;
+            AIUser obj = new AIUser();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_connectionString))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("usp_AIUser", con);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Mode", 2);
+                    cmd.Parameters.AddWithValue("@UserName", pAIUser.UserName);
+                    cmd.Parameters.AddWithValue("@Password", pAIUser.Password);
+
+
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    {
+                        while (rdr.Read())
+                        {
+                            obj.UserName = Convert.ToString(rdr["UserName"]);
+                            obj.AIUserID = Convert.ToInt32(rdr["AIUserID"]);
+                            obj.Status = true;
+
+                            if (string.IsNullOrWhiteSpace(obj.UserName))
+                            {
+                                obj.Status = false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                res = false;
+                obj.Status = res;
+            }
+            return Ok(obj);
+        }
     }
 }

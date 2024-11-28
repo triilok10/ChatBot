@@ -91,9 +91,53 @@ namespace ChatBot.Controllers
         #endregion
 
         [HttpPost]
-        public IActionResult LoginSubmit(AIUser pAIUser)
+        public async Task<IActionResult> LoginSubmit(AIUser pAIUser)
         {
-            return RedirectToAction("", "");
+            string msg = "";
+            bool res = false;
+            string Message = "";
+            string apiUrl = baseUrl + "api/LoginAPI/LoginAuthenticate";
+
+            string Json = JsonConvert.SerializeObject(pAIUser);
+
+            StringContent content = new StringContent(Json, Encoding.UTF8, "application/json");
+
+            //Checking the AntiFrogery Token
+            var tokenFromForm = Request.Form["__RequestVerificationToken"].FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(tokenFromForm))
+            {
+                Message = "CSRF token missing.";
+                TempData["ErrorMessage"] = Message; return RedirectToAction("Contact", "Home");
+            }
+            var request = new HttpRequestMessage(HttpMethod.Post, apiUrl) { Content = content };
+            var antiforgeryCookie = Request.Cookies[".AspNetCore.Antiforgery"];
+            if (!string.IsNullOrWhiteSpace(tokenFromForm)) { request.Headers.Add("X-XSRF-TOKEN", tokenFromForm); }
+            if (!string.IsNullOrWhiteSpace(antiforgeryCookie)) { request.Headers.Add("Cookie", $".AspNetCore.Antiforgery={antiforgeryCookie}"); }
+
+
+
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                dynamic resBody = await response.Content.ReadAsStringAsync();
+                AIUser obj = JsonConvert.DeserializeObject<AIUser>(resBody);
+                if (obj.Status == false)
+                {
+                    TempData["errorMessage"] = "Please enter the Correct Username or Password";
+                    return RedirectToAction("Login", "Login");
+                }
+                else
+                {
+                    _sessionService.SetString("UserName", obj.UserName);
+                    _sessionService.SetInt32("UserID", obj.AIUserID);
+                }
+
+
+            }
+
+
+            return RedirectToAction("AIDashBoard", "AI");
         }
 
         public PartialViewResult _TermsCondition(string hdnAcceptValue)
