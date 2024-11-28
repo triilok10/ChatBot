@@ -91,7 +91,7 @@ namespace ChatBot.Controllers
         #endregion
 
         [HttpPost]
-        public IActionResult LoginSubmit()
+        public IActionResult LoginSubmit(AIUser pAIUser)
         {
             return RedirectToAction("", "");
         }

@@ -387,18 +387,20 @@
 
             <!-- Login Form -->
             <div id="loginForm" style="display:none;">
-                <form class="form-detail" action="#" method="post" id="loginFormDetail" onsubmit="return js_ValidateLogin();">
+                <form class="form-detail" asp-controller="Login" asp-action="LoginSubmit" method="post" id="loginFormDetail" onsubmit="return js_ValidateLogin();">
                     <h2>Login</h2>
                     <div class="form-row">
+                        @Html.AntiForgeryToken()
                         <label asp-for="UserName">Username</label>
                         <input type="text" asp-for="UserName" id="LoginUserName" class="input-text" placeholder="Username">
+                        <span id="username-errorr" style="color: red; display: none;">Only letters, numbers, and underscores are allowed.</span>
                     </div>
                     <div class="form-row">
                         <label asp-for="Password">Password</label>
                         <input type="password" asp-for="Password" id="LoginPassword" class="input-text" placeholder="Password">
                     </div>
                     <div class="form-row-last">
-                        <input type="submit" name="login" class="form-login" value="Login">
+                        <input type="submit" name="login" class="form-login" value="Login" id="login">
                     </div>
 
                     <div class="form-row-last">
@@ -524,7 +526,67 @@
     });
 
 
+    //Code to Stip the Special Character and Space for UserName
+    document.addEventListener("DOMContentLoaded", function () {
+        const userNameInput = document.getElementById("LoginUserName");
+        const errorMessage = document.getElementById("username-errorr");
+        const registerButton = document.getElementById("login");
 
+        // Function to validate input
+        function validateInput(event) {
+            const regex = /^[a-zA-Z0-9_]*$/;
+            const value = event.target.value;
+
+            if (!regex.test(value)) {
+                errorMessage.style.display = "inline";
+                event.target.setCustomValidity("Invalid input");
+            } else {
+                errorMessage.style.display = "none";
+                event.target.setCustomValidity("");
+            }
+        }
+
+        // Event listener for keypress
+        userNameInput.addEventListener("keypress", function (event) {
+            const char = String.fromCharCode(event.which);
+            if (!/^[a-zA-Z0-9_]$/.test(char)) {
+                event.preventDefault();
+                errorMessage.style.display = "inline";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        });
+
+        // Event listener for paste events
+        userNameInput.addEventListener("paste", function (event) {
+            const clipboardData = event.clipboardData || window.clipboardData;
+            const pastedData = clipboardData.getData('Text');
+
+            if (!/^[a-zA-Z0-9_]*$/.test(pastedData)) {
+                event.preventDefault();
+                errorMessage.style.display = "inline";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        });
+
+
+        userNameInput.addEventListener("input", validateInput);
+
+
+        registerButton.addEventListener("click", function () {
+
+            if (userNameInput.value.trim() == "") {
+                $("#UserName").addClass("border-danger");
+                toastr.error("Please enter the Username");
+                return;
+            } else {
+                $("#UserName").removeClass("border-danger");
+            }
+
+
+        });
+    });
 
     function js_PartialTermsCondition() {
 
