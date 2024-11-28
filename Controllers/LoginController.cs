@@ -86,7 +86,7 @@ namespace ChatBot.Controllers
             {
 
             }
-            return RedirectToAction("", "");
+            return RedirectToAction("AIDashBoard", "AI");
         }
         #endregion
 

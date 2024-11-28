@@ -16,6 +16,15 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.Name = ".AspNetCore.Antiforgery";
 });
 
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(5);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,7 +38,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.Use(async (context, next) =>
