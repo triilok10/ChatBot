@@ -1,4 +1,5 @@
 using ChatBot.AppCode;
+using ChatBot.Controllers;
 using Microsoft.AspNetCore.Antiforgery;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-//builder.Services.AddScoped<SessionAdmin>();
+builder.Services.AddScoped<SessionAdmin>();
 //builder.Services.AddScoped<RedirectIfLoggedInAttribute>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddAntiforgery(options =>
