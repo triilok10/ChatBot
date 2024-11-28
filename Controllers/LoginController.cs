@@ -90,6 +90,12 @@ namespace ChatBot.Controllers
         }
         #endregion
 
+        [HttpPost]
+        public IActionResult LoginSubmit()
+        {
+            return RedirectToAction("", "");
+        }
+
         public PartialViewResult _TermsCondition(string hdnAcceptValue)
         {
             if (!string.IsNullOrWhiteSpace(hdnAcceptValue))
