@@ -76,6 +76,7 @@ namespace ChatBot.Controllers.API
         {
             string msg = "";
             bool res = false;
+            bool dataFound = false;
             AIUser obj = new AIUser();
             try
             {
@@ -93,16 +94,20 @@ namespace ChatBot.Controllers.API
                     {
                         while (rdr.Read())
                         {
+                            dataFound = true;
                             obj.UserName = Convert.ToString(rdr["UserName"]);
                             obj.AIUserID = Convert.ToInt32(rdr["AIUserID"]);
                             obj.Status = true;
 
-                            if (string.IsNullOrWhiteSpace(obj.UserName))
-                            {
-                                obj.Status = false;
-                            }
+
+                        }
+                        if (!dataFound)
+                        {
+                            obj.Status = false;
                         }
                     }
+
+
                 }
             }
             catch (Exception ex)

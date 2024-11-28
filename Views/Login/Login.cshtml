@@ -3,6 +3,16 @@
     ViewData["Title"] = "Login";
 }
 
+@{
+    if (TempData["errorMessage"] != null)
+    {
+        <script>
+            alert('@TempData["errorMessage"]');
+        </script>
+    }
+}
+
+
 <style type="text/css">
     /* Common Styles */
     .form-container {
