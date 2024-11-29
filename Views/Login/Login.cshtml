@@ -1,23 +1,25 @@
 ﻿@model ChatBot.Models.AIUser;
 @{
     ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+@if (TempData["errorMessage"] != null)
+{
+    <script>
+        alert('@TempData["errorMessage"]');
+       @*  toastr.error("@TempData["errorMessage"]"); *@
+    </script>
 }
 
-@{
-    if (TempData["errorMessage"] != null)
-    {
-        <script>
-            alert('@TempData["errorMessage"]');
-        </script>
-    }
-
-    if (TempData["LoginAuth"] != null)
-    {
-        <script>
-            alert('TempData["LoginAuth"]');
-        </script>
-    }
+@if (TempData["LoginAuth"] != null)
+{
+    <script type="text/javascript">
+       
+        @* toastr.error("@TempData["LoginAuth"]"); *@
+        alert('@TempData["LoginAuth"]');
+    </script>
 }
+
 
 
 <style type="text/css">
