@@ -34,6 +34,7 @@ namespace ChatBot.Controllers
             string Username = _sessionService.GetString("UserName");
             if (string.IsNullOrEmpty(Username) || UserId == null)
             {
+                _sessionService.SetString("LoginAuth", "Auth");
                 context.Result = new RedirectToActionResult("Login", "Login", null);
             }
             base.OnActionExecuting(context);

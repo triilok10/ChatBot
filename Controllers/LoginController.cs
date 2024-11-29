@@ -37,6 +37,12 @@ namespace ChatBot.Controllers
 
         public IActionResult Login()
         {
+            var LoginAuth = _sessionService.GetString("LoginAuth");
+            if (!string.IsNullOrWhiteSpace(LoginAuth))
+            {
+                TempData["LoginAuth"] = "Please login!";
+            }
+
             return View();
         }
 
