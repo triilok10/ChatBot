@@ -1,0 +1,84 @@
+
+Step 1: rasa Activate
+
+
+Step 2:
+Model Start Path: rasa run --model D:\RasaProject\default\models\
+
+
+Below are the question which we can ask to Rasa.
+
+
+
+Question prepared to Ask using the Postman:
+
+
+      - Tell me about yourself
+      - Who are you?
+      - What do you do?
+      - Can you introduce yourself?
+      - What’s your background?
+      - What is your purpose?
+      - Tell me about your project
+      - How were you created?
+      - What’s your story?
+      - Why are you here?
+      - What can you help with?
+      - What is your function?
+      - What makes you unique?
+      - How do you work?
+      - Where did you come from?
+      - What’s your mission?
+      - Who is behind you?
+      - How can I interact with you?
+      - Why do you exist?
+      - What’s the goal of your existence?
+
+  
+      - What is APNA AI?
+      - Tell me about the APNA AI project
+      - What is the purpose of APNA AI?
+      - What technologies are used in APNA AI?
+      - How does APNA AI work?
+      - What is the main goal of APNA AI?
+      - When was APNA AI launched?
+      - What are the features of APNA AI?
+      - How can APNA AI assist me?
+      - What is the future of APNA AI?
+      - Is APNA AI open-source?
+      - How do I use APNA AI?
+      - Who created APNA AI?
+      - What makes APNA AI unique?
+      - What can I do with APNA AI?
+      - Can APNA AI integrate with other systems?
+      - How is APNA AI trained?
+      - What programming languages does APNA AI use?
+      - What type of AI does APNA AI use?
+      - Can APNA AI learn from conversations?
+
+      - How do I integrate the APNA AI chatbot into my project?
+      - Can you provide the API documentation?
+      - How can I use the API in my project?
+      - I want to integrate your chatbot. How do I do that?
+      - Where can I find the integration guide?
+      - How do I connect to the APNA AI API?
+      - What are the API endpoints for integration?
+      - Do you have an API for integration?
+      - Is there any documentation for integrating the bot?
+      - How do I set up the chatbot in my application?
+
+
+      - Hi
+      - Hello
+      - Hey
+      - Good morning
+      - Howdy
+
+
+
+      - What time is it?
+      - Can you tell me the time?
+      - What’s the current time?
+
+      - Can you tell me a joke?
+      - What is the weather today?
