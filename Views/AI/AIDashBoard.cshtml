@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ChatBot.Models.AIChat;
+@{
     ViewData["Title"] = "AIDashBoard";
     Layout = null;
 }
@@ -10,14 +11,14 @@
 <script src="~/js/toastr.min.js"></script>
 <link href="~/js/toastr.min.css" rel="stylesheet" />
 <style>
-    /* Container that holds both user info and chat area */
+
     .chat-container {
         display: flex;
         height: 100vh;
         padding: 10px;
     }
 
-    /* User panel with a fixed width of 25% on larger screens */
+
     .user-info {
         width: 25%;
         background-color: #f1f1f1;
@@ -48,7 +49,7 @@
             margin-bottom: 10px;
         }
 
-    /* Chat area (right side), taking the remaining 75% */
+
     .chat-area {
         width: 75%;
         display: flex;
@@ -59,7 +60,7 @@
         background-color: #f9f9f9;
         border-radius: 8px;
         margin-left: 10px;
-        border: 1px solid #ddd; /* Added border */
+        border: 1px solid #ddd;
     }
 
         .chat-area h2 {
@@ -69,13 +70,13 @@
             margin-bottom: 20px;
         }
 
-    /* Chat history */
+
     .chat-history {
         flex-grow: 1;
         margin-bottom: 10px;
     }
 
-    /* User and bot messages */
+
     .user-message, .bot-message {
         margin-bottom: 15px;
         max-width: 75%;
@@ -86,22 +87,22 @@
     .user-message {
         background-color: #007bff;
         color: white;
-        align-self: flex-end; /* User message aligned to the right */
+        align-self: flex-end;
     }
 
     .bot-message {
         background-color: #e0e0e0;
         color: #333;
-        align-self: flex-start; /* Bot message aligned to the left */
+        align-self: flex-start;
     }
 
-    /* Chat input area */
+
     .chat-input-container {
         display: flex;
         justify-content: space-between;
         margin-top: 10px;
         padding: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow outside the input panel */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         background-color: #fff;
     }
@@ -126,7 +127,7 @@
                 background-color: #0056b3;
             }
 
-    /* Responsive Design: Adjust layout for smaller screens */
+
     @@media (max-width: 1024px) {
         .chat-container {
             flex-direction: column;
@@ -187,23 +188,23 @@
 </style>
 
 <div class="chat-container">
-    <!-- User Info Panel -->
+
     <div class="user-info">
-        <span>User Info: John Doe</span>
+        <span>User Info: @Model.UserName</span>
         <button onclick="logout()">Logout</button>
     </div>
 
-    <!-- Chat Area -->
+
     <div class="chat-area">
         <h2>AI Powered ChatBot</h2>
 
         <div class="chat-history" id="chatHistory">
-            <!-- Example of Chat: User asks, Bot responds -->
+
             <div class="user-message">What is the weather like today?</div>
             <div class="bot-message">The weather today is sunny with a high of 25°C.</div>
         </div>
 
-        <!-- Input Panel with box-shadow -->
+
         <div class="chat-input-container">
             <input type="text" placeholder="Type a message..." id="userMessage">
             <button onclick="sendMessage()">Send</button>
@@ -217,22 +218,21 @@
         if (userMessage) {
             const messageContainer = document.getElementById('chatHistory');
 
-            // User's message (on the right)
+
             const userMessageDiv = document.createElement('div');
             userMessageDiv.classList.add('user-message');
             userMessageDiv.textContent = userMessage;
             messageContainer.appendChild(userMessageDiv);
 
-            // Bot's response (on the left)
+
             const botMessageDiv = document.createElement('div');
             botMessageDiv.classList.add('bot-message');
             botMessageDiv.textContent = "I’m processing your request...";
             messageContainer.appendChild(botMessageDiv);
 
-            // Scroll to the bottom of the chat
+
             messageContainer.scrollTop = messageContainer.scrollHeight;
 
-            // Clear the input field
             document.getElementById('userMessage').value = '';
         }
     }

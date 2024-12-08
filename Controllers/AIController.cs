@@ -1,6 +1,8 @@
 ﻿using ChatBot.AppCode;
+using ChatBot.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Net.Http;
 
 namespace ChatBot.Controllers
 {
@@ -8,6 +10,26 @@ namespace ChatBot.Controllers
     [ServiceFilter(typeof(SessionAdmin))]
     public class AIController : Controller
     {
+
+        //To call the API
+        private readonly HttpClient _httpClient;
+        private readonly dynamic baseUrl;
+        IHttpContextAccessor _httpContextAccessor;
+        private readonly ISessionService _sessionService;
+        public AIController(ISessionService sessionService, HttpClient httpclient, IHttpContextAccessor httpContextAccessor)
+        {
+            _httpClient = httpclient;
+            _sessionService = sessionService;
+            _httpContextAccessor = httpContextAccessor;
+            var request = _httpContextAccessor.HttpContext.Request;
+            baseUrl = $"{request.Scheme}://{request.Host.Value}/"; _httpClient.BaseAddress = new Uri(baseUrl);
+        }
+
+
+
+
+
+
         public IActionResult Index()
         {
             return View();
@@ -15,7 +37,26 @@ namespace ChatBot.Controllers
 
         public IActionResult AIDashBoard()
         {
-            return View();
+            bool res = false;
+            string msg = string.Empty;
+            try
+            {
+                AIChat pchat = new AIChat();
+
+                var UserName = _sessionService.GetString("UserName");
+                var UserId = _sessionService.GetInt32("UserID");
+
+
+                string apiUrl = baseUrl + "";
+
+                return View(pchat);
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                res = false;
+                return RedirectToAction("Error", "Home");
+            }
         }
     }
 

@@ -67,10 +67,12 @@ namespace ChatBot.Controllers.API
                 Obj.Errmsg = msg;
                 return Ok(Obj);
             }
-            #endregion
 
         }
 
+        #endregion
+
+        #region "Login"
         [HttpPost]
         public IActionResult LoginAuthenticate([FromBody] AIUser pAIUser)
         {
@@ -118,5 +120,7 @@ namespace ChatBot.Controllers.API
             }
             return Ok(obj);
         }
+
+        #endregion
     }
 }
