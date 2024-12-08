@@ -9,164 +9,235 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="~/js/toastr.min.js"></script>
 <link href="~/js/toastr.min.css" rel="stylesheet" />
-
 <style>
+    /* Container that holds both user info and chat area */
     .chat-container {
         display: flex;
         height: 100vh;
         padding: 10px;
-        flex-wrap: wrap;
     }
 
+    /* User panel with a fixed width of 25% on larger screens */
     .user-info {
-        width: 30%;
+        width: 25%;
         background-color: #f1f1f1;
         padding: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
     }
 
+        .user-info button {
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .user-info button:hover {
+                background-color: #c82333;
+            }
+
+        .user-info span {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+    /* Chat area (right side), taking the remaining 75% */
+    .chat-area {
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        padding: 7%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        margin-left: 10px;
+        border: 1px solid #ddd; /* Added border */
+    }
+
+        .chat-area h2 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+    /* Chat history */
     .chat-history {
         flex-grow: 1;
-        overflow-y: auto;
-        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
+    /* User and bot messages */
     .user-message, .bot-message {
         margin-bottom: 15px;
+        max-width: 75%;
+        padding: 10px;
+        border-radius: 10px;
     }
 
     .user-message {
         background-color: #007bff;
         color: white;
-        padding: 10px;
-        border-radius: 10px;
-        align-self: flex-end;
-        max-width: 75%;
+        align-self: flex-end; /* User message aligned to the right */
     }
 
     .bot-message {
         background-color: #e0e0e0;
-        padding: 10px;
-        border-radius: 10px;
-        align-self: flex-start;
-        max-width: 75%;
-    }
-
-    .chat-area {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Center content vertically */
-        align-items: center; /* Center content horizontally */
-        text-align: center; /* Center text */
-    }
-
-    .chat-area h2 {
-        font-size: 32px; /* Larger font size */
         color: #333;
+        align-self: flex-start; /* Bot message aligned to the left */
     }
 
-    .ai-assistant-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 15px;
-        border-radius: 50%;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
+    /* Chat input area */
+    .chat-input-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow outside the input panel */
+        border-radius: 8px;
+        background-color: #fff;
     }
 
-    .ai-assistant-btn:hover {
-        background-color: #218838;
-    }
+        .chat-input-container input {
+            width: 85%;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+        }
 
-    .modal-dialog {
-        max-width: 400px;
-    }
+        .chat-input-container button {
+            width: 12%;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: #007bff;
+            color: white;
+        }
 
-    .modal-content {
-        border-radius: 8px; 
+            .chat-input-container button:hover {
+                background-color: #0056b3;
+            }
+
+    /* Responsive Design: Adjust layout for smaller screens */
+    @@media (max-width: 1024px) {
+        .chat-container {
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .user-info {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .chat-area {
+            width: 100%;
+            margin-left: 0;
+            padding: 10%;
+            height: 100vh;
+        }
+
+        .chat-input-container input {
+            width: 75%;
+        }
+
+        .chat-input-container button {
+            width: 20%;
+        }
     }
 
     @@media (max-width: 768px) {
-      .chat-container {
-          flex-direction: column; /* Stack elements vertically on small screens */
-      }
-      .user-info, .chat-area {
-          width: 100%; /* Full width */
-          margin-bottom: 10px; /* Space between sections */
-      }
-      .ai-assistant-btn {
-          bottom: 15px; /* Adjust button position */
-          right: 15px; /* Adjust button position */
-      }
-   }
+        .chat-container {
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .user-info {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .chat-area {
+            width: 100%;
+            margin-left: 0;
+            padding: 10%;
+            height: 100vh;
+        }
+
+        .chat-input-container input {
+            width: 75%;
+        }
+
+        .chat-input-container button {
+            width: 20%;
+        }
+
+        .chat-area h2 {
+            font-size: 20px;
+        }
+    }
 </style>
 
 <div class="chat-container">
-    
+    <!-- User Info Panel -->
     <div class="user-info">
-       <span>User Info:</span>
-       <span>John Doe</span>
-       <h5>Chat History:</h5>
-       <div class="chat-history">
-           <div class="user-message">Hi! How are you?</div>
-           <div class="bot-message">Hello! I'm here to help you. How can I assist you today?</div>
-       </div>
-       <button onclick="logout()" class="btn btn-danger">Logout</button>
-   </div>
+        <span>User Info: John Doe</span>
+        <button onclick="logout()">Logout</button>
+    </div>
 
-   <div class="chat-area">
-       <h2>AI Powered Conversational Chatbot</h2>
-   </div>
+    <!-- Chat Area -->
+    <div class="chat-area">
+        <h2>AI Powered ChatBot</h2>
 
-</div>
+        <div class="chat-history" id="chatHistory">
+            <!-- Example of Chat: User asks, Bot responds -->
+            <div class="user-message">What is the weather like today?</div>
+            <div class="bot-message">The weather today is sunny with a high of 25°C.</div>
+        </div>
 
-<button class="ai-assistant-btn" onclick="openAssistantModal()">AI Assistant</button>
-
-<div class="modal fade" id="assistantModal" tabindex="-1" aria-labelledby="assistantModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h5 class="modal-title" id="assistantModalLabel">AI Assistant</h5>
-               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-           </div>
-           <div class="modal-body">
-               <input type="text" id="assistantQuery" placeholder="Ask your question..." class="form-control"/>
-           </div>
-           <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-               <button type="button" class="btn btn-primary" onclick="askAssistant()">Ask</button>
-           </div>
-       </div>
-   </div>
+        <!-- Input Panel with box-shadow -->
+        <div class="chat-input-container">
+            <input type="text" placeholder="Type a message..." id="userMessage">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 </div>
 
 <script>
-   function logout() {
-       alert("Logging out...");
-   }
+    function sendMessage() {
+        const userMessage = document.getElementById('userMessage').value;
+        if (userMessage) {
+            const messageContainer = document.getElementById('chatHistory');
 
-   function openAssistantModal() {
-       const modal = new bootstrap.Modal(document.getElementById('assistantModal'));
-       modal.show();
-   }
+            // User's message (on the right)
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.classList.add('user-message');
+            userMessageDiv.textContent = userMessage;
+            messageContainer.appendChild(userMessageDiv);
 
-   function askAssistant() {
-       const query = document.getElementById('assistantQuery').value;
+            // Bot's response (on the left)
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.classList.add('bot-message');
+            botMessageDiv.textContent = "I’m processing your request...";
+            messageContainer.appendChild(botMessageDiv);
 
-       if (query) {
-           // Here you would typically send the query to your Rasa server and handle the response.
-           alert(`You asked the assistant: ${query}`);
-           document.getElementById('assistantQuery').value = ''; // Clear input
-       } else {
-           alert("Please enter a question.");
-       }
-   }
+            // Scroll to the bottom of the chat
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+
+            // Clear the input field
+            document.getElementById('userMessage').value = '';
+        }
+    }
+
+    function logout() {
+        alert("Logging out...");
+    }
 </script>
