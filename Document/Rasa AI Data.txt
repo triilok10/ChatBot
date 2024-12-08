@@ -1,8 +1,9 @@
-
+Steps to follow to start the Server and Also train the Model with latest data
 Step 1: rasa Activate
 
+Srep 2: To train the rasa: /d D:\RasaProject\default
 
-Step 2:
+Step 3:
 Model Start Path: rasa run --model D:\RasaProject\default\models\
 
 
@@ -82,3 +83,25 @@ Question prepared to Ask using the Postman:
 
       - Can you tell me a joke?
       - What is the weather today?
+
+
+      - Who developed this chatbot?
+      - Which company developed this chatbot?
+      - When was this chatbot created?
+      - What technology powers this chatbot?
+      - What programming languages were used to build this chatbot?
+      - How does this chatbot understand natural language?
+      - Is this chatbot based on AI or machine learning?
+      - Who are the engineers behind the development of this chatbot?
+      - What is the purpose of this chatbot?
+      - Was this chatbot created by a team of developers?
+      - Is this chatbot open source or proprietary?
+      - What are the core features of this chatbot?
+      - How does this chatbot process user input?
+      - Is this chatbot capable of learning over time?
+      - How does this chatbot improve its responses?
+      - Can this chatbot interact in multiple languages?
+      - What kind of training data was used for this chatbot?
+      - Was any external platform or service used to build this chatbot?
+      - Is this chatbot part of a larger software product?
+      - What challenges were faced during the development of this chatbot?
