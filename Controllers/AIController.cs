@@ -2,6 +2,7 @@
 using ChatBot.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using System.Net.Http;
 
 namespace ChatBot.Controllers
@@ -46,8 +47,11 @@ namespace ChatBot.Controllers
                 var UserName = _sessionService.GetString("UserName");
                 var UserId = _sessionService.GetInt32("UserID");
 
+                pchat.UserID = (int)UserId;
+                string apiUrl = baseUrl + "api/User/UserRecordGet";
+                string json = JsonConvert.SerializeObject(pchat);
 
-                string apiUrl = baseUrl + "";
+                StringContent con = new StringContent(json);
 
                 return View(pchat);
             }
