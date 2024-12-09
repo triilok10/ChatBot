@@ -36,7 +36,7 @@ namespace ChatBot.Controllers
         {
             return View();
         }
-
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> AIDashBoard()
         {
             bool res = false;
