@@ -145,6 +145,7 @@ namespace ChatBot.Controllers
                 }
                 else
                 {
+                    _sessionService.SetString("JWTToken", obj.Token);
                     _sessionService.SetString("UserName", obj.UserName);
                     _sessionService.SetInt32("UserID", obj.AIUserID);
                 }

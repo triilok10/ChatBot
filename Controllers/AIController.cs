@@ -1,4 +1,5 @@
-﻿using ChatBot.AppCode;
+﻿using Azure.Core;
+using ChatBot.AppCode;
 using ChatBot.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -29,14 +30,11 @@ namespace ChatBot.Controllers
 
 
 
-
-
-
         public IActionResult Index()
         {
             return View();
         }
-        [IgnoreAntiforgeryToken]
+
         public async Task<IActionResult> AIDashBoard()
         {
             bool res = false;
@@ -52,12 +50,22 @@ namespace ChatBot.Controllers
                 string apiUrl = baseUrl + "api/User/UserRecordGet";
                 string json = JsonConvert.SerializeObject(pchat);
 
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
-
-                if (response.IsSuccessStatusCode)
+                var token = _sessionService.GetString("JWTToken");
+                if (!string.IsNullOrEmpty(token))
                 {
 
+                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl);
+                    request.Headers.Add("Authorization", "Bearer " + token);
+
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    request.Content = content;
+
+                    HttpResponseMessage response = await _httpClient.SendAsync(request);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+
+                    }
                 }
 
                 return View(pchat);
@@ -69,6 +77,7 @@ namespace ChatBot.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
     }
 
     public class SessionAdmin : ActionFilterAttribute

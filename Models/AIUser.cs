@@ -42,6 +42,7 @@ namespace ChatBot.Models
         public bool? IsNotificationSend { get; set; }
         public bool? TermsCondition { get; set; }
         public string? Errmsg { get; set; }
+        public string? Token { get; set; }
         public bool? Status { get; set; }
 
 
