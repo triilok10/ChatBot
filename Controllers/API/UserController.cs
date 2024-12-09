@@ -18,6 +18,7 @@ namespace ChatBot.Controllers.API
 
 
         #region "User Record Get"
+        [HttpPost]
         public IActionResult UserRecordGet([FromBody] AIChat pAIChat)
         {
             bool res = false;

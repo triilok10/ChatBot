@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 
 namespace ChatBot.Controllers
 {
@@ -36,7 +37,7 @@ namespace ChatBot.Controllers
             return View();
         }
 
-        public IActionResult AIDashBoard()
+        public async Task<IActionResult> AIDashBoard()
         {
             bool res = false;
             string msg = string.Empty;
@@ -51,7 +52,13 @@ namespace ChatBot.Controllers
                 string apiUrl = baseUrl + "api/User/UserRecordGet";
                 string json = JsonConvert.SerializeObject(pchat);
 
-                StringContent con = new StringContent(json);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                }
 
                 return View(pchat);
             }
