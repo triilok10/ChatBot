@@ -49,17 +49,14 @@ namespace ChatBot.Controllers
                 pchat.UserID = (int)UserId;
                 string apiUrl = baseUrl + "api/User/UserRecordGet";
                 string json = JsonConvert.SerializeObject(pchat);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var token = _sessionService.GetString("JWTToken");
                 if (!string.IsNullOrEmpty(token))
                 {
 
-                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl);
+                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl) { Content = content }; ;
                     request.Headers.Add("Authorization", "Bearer " + token);
-
-                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                    request.Content = content;
-
                     HttpResponseMessage response = await _httpClient.SendAsync(request);
 
                     if (response.IsSuccessStatusCode)

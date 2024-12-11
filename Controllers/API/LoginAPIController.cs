@@ -139,7 +139,7 @@ namespace ChatBot.Controllers.API
         {
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.AIUserID.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim("userId", user.AIUserID.ToString())
         };

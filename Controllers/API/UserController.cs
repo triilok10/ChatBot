@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ChatBot.Controllers.API
 {
+
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
