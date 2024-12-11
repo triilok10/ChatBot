@@ -42,7 +42,7 @@ namespace ChatBot.Controllers
             try
             {
                 AIChat pchat = new AIChat();
-
+                AIChat pAIChat = new AIChat();
                 var UserName = _sessionService.GetString("UserName");
                 var UserId = _sessionService.GetInt32("UserID");
 
@@ -61,11 +61,16 @@ namespace ChatBot.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-
+                        dynamic resBody = await response.Content.ReadAsStringAsync();
+                        pAIChat = JsonConvert.DeserializeObject<AIChat>(resBody);
                     }
+                    return View(pAIChat);
+                }
+                else
+                {
+                    return RedirectToAction("Error", "Home");
                 }
 
-                return View(pchat);
             }
             catch (Exception ex)
             {
