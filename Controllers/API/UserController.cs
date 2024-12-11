@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace ChatBot.Controllers.API
 {
@@ -98,6 +99,72 @@ namespace ChatBot.Controllers.API
                 return Ok(new { res, msg = ex.Message });
             }
         }
+        #endregion
+
+        #region "AskToChatBot"
+
+        [HttpPost]
+        public async Task<IActionResult> AskToChatBot([FromBody] AIChat pAIChat)
+        {
+            bool response = false;
+            string msg = string.Empty;
+
+            try
+            {
+                string rasaAPIEndpoint = "http://localhost:5005/webhooks/rest/webhook";
+                string rasaStatusEndpoint = "http://localhost:5005/status";
+
+                using (var client = new HttpClient())
+                {
+                    //var statusResponse = await client.GetAsync(rasaStatusEndpoint);
+                    //if (statusResponse.IsSuccessStatusCode)
+                    //{
+                    var requestBody = new
+                    {
+                        sender = "user",
+                        message = pAIChat.userQuestion
+                    };
+
+                    var jsonContent = JsonConvert.SerializeObject(requestBody);
+                    var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    var responseMessage = await client.PostAsync(rasaAPIEndpoint, content);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var rasaResponseJson = await responseMessage.Content.ReadAsStringAsync();
+                        var rasaResponse = JsonConvert.DeserializeObject<List<RasaResponse>>(rasaResponseJson);
+
+                        if (rasaResponse != null && rasaResponse.Count > 0)
+                        {
+                            msg = rasaResponse[0].Text;
+                            response = true;
+                        }
+                        else
+                        {
+                            msg = "No response from Rasa.";
+                        }
+                    }
+                    else
+                    {
+                        msg = $"Rasa API error: {responseMessage.StatusCode}";
+                    }
+                    //}
+                    //else
+                    //{
+                    //    msg = "Rasa server is not running or unreachable.";
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = $"Error: {ex.Message}";
+            }
+
+            return Ok(new { success = response, message = msg });
+        }
+
+
         #endregion
 
         #region "Validate JWT Token"

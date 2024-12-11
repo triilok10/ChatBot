@@ -15,5 +15,15 @@
         //Response
         public bool? Response { get; set; } = false;
 
+        //Question
+        public string? userQuestion { get; set; }
+
+
+    }
+
+    public class RasaResponse
+    {
+        //Text
+        public string Text { get; set; }
     }
 }

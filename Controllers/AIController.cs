@@ -80,6 +80,34 @@ namespace ChatBot.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AskToChatBot(AIChat pAIChat)
+        {
+            bool Response = false;
+            string Message = "";
+            try
+            {
+                string apiUrl = baseUrl + "api/User/AskToChatBot";
+                string Json = JsonConvert.SerializeObject(pAIChat);
+
+                StringContent content = new StringContent(Json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage res = await _httpClient.PostAsync(apiUrl, content);
+
+                if (res.IsSuccessStatusCode)
+                {
+                    dynamic responseBody = await res.Content.ReadAsStringAsync();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("", "");
+        }
+
     }
 
     public class SessionAdmin : ActionFilterAttribute

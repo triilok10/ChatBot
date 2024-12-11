@@ -196,33 +196,33 @@
 
 
     <div class="chat-area">
-        <h2>AI Powered ChatBot</h2>
+        <form asp-controller="AI" asp-action="AskToChatBot" method="post">
+            <h2>AI Powered ChatBot</h2>
+            <div class="chat-history" id="chatHistory">
 
-        <div class="chat-history" id="chatHistory">
+                <div class="user-message">What is the weather like today?</div>
+                <div class="bot-message">The weather today is sunny with a high of 25°C.</div>
+            </div>
 
-            <div class="user-message">What is the weather like today?</div>
-            <div class="bot-message">The weather today is sunny with a high of 25°C.</div>
-        </div>
-
-
-        <div class="chat-input-container">
-            <input type="text" placeholder="Type a message..." id="userMessage">
-            <button onclick="sendMessage()">Send</button>
-        </div>
+            <div class="chat-input-container">
+                <input type="text" asp-for="userQuestion" placeholder="Type a message..." id="userQuestion">
+                <button type="submit">Send</button>
+            </div>
+        </form>
     </div>
 </div>
 
 <script>
     function sendMessage() {
-        const userMessage = document.getElementById('userMessage').value;
-        if (userMessage) {
+        const userQuestion = document.getElementById('userQuestion').value;
+        if (userQuestion) {
             const messageContainer = document.getElementById('chatHistory');
 
 
-            const userMessageDiv = document.createElement('div');
-            userMessageDiv.classList.add('user-message');
-            userMessageDiv.textContent = userMessage;
-            messageContainer.appendChild(userMessageDiv);
+            const userQuestionDiv = document.createElement('div');
+            userQuestionDiv.classList.add('user-message');
+            userQuestionDiv.textContent = userQuestion;
+            messageContainer.appendChild(userQuestionDiv);
 
 
             const botMessageDiv = document.createElement('div');
@@ -233,7 +233,7 @@
 
             messageContainer.scrollTop = messageContainer.scrollHeight;
 
-            document.getElementById('userMessage').value = '';
+            document.getElementById('userQuestion').value = '';
         }
     }
 
