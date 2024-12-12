@@ -107,6 +107,9 @@ namespace ChatBot.Controllers.API
         public async Task<IActionResult> AskToChatBot([FromBody] AIChat pAIChat)
         {
             AIChat obj = new AIChat();
+
+            obj.Message = string.Empty;
+            obj.Response = false;
             try
             {
                 string rasaAPIEndpoint = "http://localhost:5005/webhooks/rest/webhook";
@@ -141,16 +144,19 @@ namespace ChatBot.Controllers.API
                             else
                             {
                                 obj.Message = "No response from Rasa.";
+                                obj.Response = true;
                             }
                         }
                         else
                         {
                             obj.Message = $"Rasa API error: {responseMessage.StatusCode}";
+                            obj.Response = false;
                         }
                     }
                     else
                     {
                         obj.Message = "Rasa server is not running or unreachable.";
+                        obj.Response = false;
                     }
                 }
             }

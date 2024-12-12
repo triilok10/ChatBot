@@ -85,6 +85,7 @@ namespace ChatBot.Controllers
         {
             bool Response = false;
             string Message = "";
+            AIChat obj = new AIChat();
             try
             {
                 string apiUrl = baseUrl + "api/User/AskToChatBot";
@@ -97,6 +98,7 @@ namespace ChatBot.Controllers
                 if (res.IsSuccessStatusCode)
                 {
                     dynamic responseBody = await res.Content.ReadAsStringAsync();
+                    obj = JsonConvert.DeserializeObject<AIChat>(responseBody);
 
                 }
 
