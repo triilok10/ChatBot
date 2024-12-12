@@ -116,44 +116,44 @@ namespace ChatBot.Controllers.API
 
                 using (var client = new HttpClient())
                 {
-                    //var statusResponse = await client.GetAsync(rasaStatusEndpoint);
-                    //if (statusResponse.IsSuccessStatusCode)
-                    //{
-                    var requestBody = new
+                    var statusResponse = await client.GetAsync(rasaStatusEndpoint);
+                    if (statusResponse.IsSuccessStatusCode)
                     {
-                        sender = "user",
-                        message = pAIChat.userQuestion
-                    };
-
-                    var jsonContent = JsonConvert.SerializeObject(requestBody);
-                    var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                    var responseMessage = await client.PostAsync(rasaAPIEndpoint, content);
-
-                    if (responseMessage.IsSuccessStatusCode)
-                    {
-                        var rasaResponseJson = await responseMessage.Content.ReadAsStringAsync();
-                        var rasaResponse = JsonConvert.DeserializeObject<List<RasaResponse>>(rasaResponseJson);
-
-                        if (rasaResponse != null && rasaResponse.Count > 0)
+                        var requestBody = new
                         {
-                            msg = rasaResponse[0].Text;
-                            response = true;
+                            sender = "user",
+                            message = pAIChat.userQuestion
+                        };
+
+                        var jsonContent = JsonConvert.SerializeObject(requestBody);
+                        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                        var responseMessage = await client.PostAsync(rasaAPIEndpoint, content);
+
+                        if (responseMessage.IsSuccessStatusCode)
+                        {
+                            var rasaResponseJson = await responseMessage.Content.ReadAsStringAsync();
+                            var rasaResponse = JsonConvert.DeserializeObject<List<RasaResponse>>(rasaResponseJson);
+
+                            if (rasaResponse != null && rasaResponse.Count > 0)
+                            {
+                                msg = rasaResponse[0].Text;
+                                response = true;
+                            }
+                            else
+                            {
+                                msg = "No response from Rasa.";
+                            }
                         }
                         else
                         {
-                            msg = "No response from Rasa.";
+                            msg = $"Rasa API error: {responseMessage.StatusCode}";
                         }
                     }
                     else
                     {
-                        msg = $"Rasa API error: {responseMessage.StatusCode}";
+                        msg = "Rasa server is not running or unreachable.";
                     }
-                    //}
-                    //else
-                    //{
-                    //    msg = "Rasa server is not running or unreachable.";
-                    //}
                 }
             }
             catch (Exception ex)
