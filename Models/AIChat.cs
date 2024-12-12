@@ -18,12 +18,15 @@
         //Question
         public string? userQuestion { get; set; }
 
-
+        //RasaSolution
+        public string? RasaSolution { get; set; }
     }
 
     public class RasaResponse
     {
         //Text
         public string Text { get; set; }
+
+
     }
 }
