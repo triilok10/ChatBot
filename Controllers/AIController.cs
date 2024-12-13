@@ -99,15 +99,16 @@ namespace ChatBot.Controllers
                 {
                     dynamic responseBody = await res.Content.ReadAsStringAsync();
                     obj = JsonConvert.DeserializeObject<AIChat>(responseBody);
-
                 }
-
+                return View(obj);
             }
             catch (Exception ex)
             {
-
+                Response = false;
+                Message = ex.Message;
+                return RedirectToAction("Error", "Home");
             }
-            return RedirectToAction("", "");
+
         }
 
     }
