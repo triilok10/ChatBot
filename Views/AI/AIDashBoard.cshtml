@@ -199,9 +199,11 @@
         <form asp-controller="AI" asp-action="AskToChatBot" method="post">
             <h2>AI Powered ChatBot</h2>
             <div class="chat-history" id="chatHistory">
-
-                <div class="user-message">What is the weather like today?</div>
-                <div class="bot-message">The weather today is sunny with a high of 25°C.</div>
+                @if (Model != null)
+                {
+                    <div class="user-message">What is the weather like today?</div>
+                    <div class="bot-message">@Model.userQuestion</div>
+                }
             </div>
 
             <div class="chat-input-container">

@@ -102,10 +102,10 @@ namespace ChatBot.Controllers
 
                     if (obj.Response == true)
                     {
-                            return View(obj);
+                        return RedirectToAction("AIDashBoard", obj);
                     }
                 }
-                return View(obj);
+                return RedirectToAction("AIDashBoard", obj);
             }
             catch (Exception ex)
             {
