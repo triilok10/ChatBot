@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using ChatBot.AppCode;
 using ChatBot.Models;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
@@ -19,11 +20,13 @@ namespace ChatBot.Controllers
         private readonly dynamic baseUrl;
         IHttpContextAccessor _httpContextAccessor;
         private readonly ISessionService _sessionService;
-        public AIController(ISessionService sessionService, HttpClient httpclient, IHttpContextAccessor httpContextAccessor)
+        private readonly IAntiforgery _antiforgery;
+        public AIController(ISessionService sessionService, HttpClient httpclient, IHttpContextAccessor httpContextAccessor, IAntiforgery antiforgery)
         {
             _httpClient = httpclient;
             _sessionService = sessionService;
             _httpContextAccessor = httpContextAccessor;
+            _antiforgery = antiforgery;
             var request = _httpContextAccessor.HttpContext.Request;
             baseUrl = $"{request.Scheme}://{request.Host.Value}/"; _httpClient.BaseAddress = new Uri(baseUrl);
         }
@@ -80,48 +83,15 @@ namespace ChatBot.Controllers
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AskToChatBot(AIChat pAIChat)
-        //{
-        //    bool Response = false;
-        //    string Message = "";
-        //    AIChat obj = new AIChat();
-        //    try
-        //    {
-        //        string apiUrl = baseUrl + "api/User/AskToChatBot";
-        //        string Json = JsonConvert.SerializeObject(pAIChat);
-
-        //        StringContent content = new StringContent(Json, Encoding.UTF8, "application/json");
-
-        //        HttpResponseMessage res = await _httpClient.PostAsync(apiUrl, content);
-
-        //        if (res.IsSuccessStatusCode)
-        //        {
-        //            dynamic responseBody = await res.Content.ReadAsStringAsync();
-        //            obj = JsonConvert.DeserializeObject<AIChat>(responseBody);
-
-        //            if (obj.Response == true)
-        //            {
-        //                return View("AIDashBoard", obj);
-        //            }
-        //        }
-        //        return View("AIDashBoard", obj);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response = false;
-        //        Message = ex.Message;
-        //        return RedirectToAction("Error", "Home");
-        //    }
-
-        //}
-
-
         [HttpPost]
+
         public async Task<IActionResult> AskToChatBot([FromBody] AIChat pAIChat)
         {
+            string Message = "";
             try
             {
+
+
                 string apiUrl = baseUrl + "api/User/AskToChatBot";
                 string json = JsonConvert.SerializeObject(pAIChat);
 

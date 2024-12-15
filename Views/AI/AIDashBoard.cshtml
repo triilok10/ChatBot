@@ -194,7 +194,7 @@
     </div>
 
     <div class="chat-area">
-        <form id="chatForm" method="post" onsubmit="return handleSubmit(event)" action="/AI/AskToChatBot">
+        <form id="chatForm" method="post" onsubmit="return handleSubmit(event)">
             <h2>AI Powered ChatBot</h2>
             <div class="chat-history" id="chatHistory"></div>
 
@@ -202,7 +202,7 @@
                 <input type="text" placeholder="Type a message..." id="userQuestion" required name="userQuestion" />
                 <button type="submit">Send</button>
             </div>
-            <input name="__RequestVerificationToken" type="hidden" value="@Html.AntiForgeryToken()" />
+            @Html.AntiForgeryToken()
         </form>
     </div>
 </div>
@@ -212,40 +212,22 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        // Load chat history from localStorage and display it
+
         const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
         displayChatHistory(chatHistory);
     };
 
-    // Function to display chat history in the UI
-    function displayChatHistory(chatHistory) {
-        const chatHistoryContainer = document.getElementById('chatHistory');
-        chatHistoryContainer.innerHTML = ''; // Clear existing chat history
 
-        chatHistory.forEach(entry => {
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('user-message');
-            userMessage.textContent = `User: ${entry.user}`;
 
-            const botMessage = document.createElement('div');
-            botMessage.classList.add('bot-message');
-            botMessage.textContent = `Bot: ${entry.bot}`;
 
-            chatHistoryContainer.appendChild(userMessage);
-            chatHistoryContainer.appendChild(botMessage);
-        });
-    }
-
-    // Handle form submission
     async function handleSubmit(event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
 
         const userQuestion = document.getElementById('userQuestion').value;
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
 
-        // Create a chat entry for the user's question
         const chatEntry = { user: userQuestion, bot: '' };
 
-        // Send the user's question to the server and get the response
         const response = await fetch('/AI/AskToChatBot', {
             method: 'POST',
             headers: {
@@ -258,29 +240,46 @@
         if (response.ok) {
             const data = await response.json();
 
-            // Check if RasaSolution is present in the response
-            if (data.RasaSolution != "") {
-                const botResponse = data.RasaSolution;
+
+            if (data.rasaSolution != "") {
+                const botResponse = data.rasaSolution;
                 chatEntry.bot = botResponse;
 
-                // Add the entry to chat history in localStorage
+
                 const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
                 chatHistory.push(chatEntry);
                 localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
 
-                // Update the UI to show the new message
+
                 displayChatHistory(chatHistory);
             } else {
                 console.error('No response from chatbot');
             }
 
-            document.getElementById('userQuestion').value = ''; // Clear input field
+            document.getElementById('userQuestion').value = '';
         } else {
             console.error('Error fetching chatbot response');
         }
     }
 
+    // Function to display chat history in the UI
+    function displayChatHistory(chatHistory) {
+        const chatHistoryContainer = document.getElementById('chatHistory');
+        chatHistoryContainer.innerHTML = '';
 
+        chatHistory.forEach(entry => {
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('user-message');
+            userMessage.textContent = `${entry.user}`;
+
+            const botMessage = document.createElement('div');
+            botMessage.classList.add('bot-message');
+            botMessage.textContent = `${entry.bot}`;
+
+            chatHistoryContainer.appendChild(userMessage);
+            chatHistoryContainer.appendChild(botMessage);
+        });
+    }
 
     function logout() {
         alert("Logging out...");
