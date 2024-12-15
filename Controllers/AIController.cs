@@ -99,6 +99,11 @@ namespace ChatBot.Controllers
                 {
                     dynamic responseBody = await res.Content.ReadAsStringAsync();
                     obj = JsonConvert.DeserializeObject<AIChat>(responseBody);
+
+                    if (obj.Response == true)
+                    {
+                            return View(obj);
+                    }
                 }
                 return View(obj);
             }
