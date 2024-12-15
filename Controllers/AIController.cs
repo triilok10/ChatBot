@@ -80,41 +80,71 @@ namespace ChatBot.Controllers
             }
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> AskToChatBot(AIChat pAIChat)
+        //{
+        //    bool Response = false;
+        //    string Message = "";
+        //    AIChat obj = new AIChat();
+        //    try
+        //    {
+        //        string apiUrl = baseUrl + "api/User/AskToChatBot";
+        //        string Json = JsonConvert.SerializeObject(pAIChat);
+
+        //        StringContent content = new StringContent(Json, Encoding.UTF8, "application/json");
+
+        //        HttpResponseMessage res = await _httpClient.PostAsync(apiUrl, content);
+
+        //        if (res.IsSuccessStatusCode)
+        //        {
+        //            dynamic responseBody = await res.Content.ReadAsStringAsync();
+        //            obj = JsonConvert.DeserializeObject<AIChat>(responseBody);
+
+        //            if (obj.Response == true)
+        //            {
+        //                return View("AIDashBoard", obj);
+        //            }
+        //        }
+        //        return View("AIDashBoard", obj);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response = false;
+        //        Message = ex.Message;
+        //        return RedirectToAction("Error", "Home");
+        //    }
+
+        //}
+
+
         [HttpPost]
-        public async Task<IActionResult> AskToChatBot(AIChat pAIChat)
+        public async Task<IActionResult> AskToChatBot([FromBody] AIChat pAIChat)
         {
-            bool Response = false;
-            string Message = "";
-            AIChat obj = new AIChat();
             try
             {
                 string apiUrl = baseUrl + "api/User/AskToChatBot";
-                string Json = JsonConvert.SerializeObject(pAIChat);
+                string json = JsonConvert.SerializeObject(pAIChat);
 
-                StringContent content = new StringContent(Json, Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage res = await _httpClient.PostAsync(apiUrl, content);
 
                 if (res.IsSuccessStatusCode)
                 {
-                    dynamic responseBody = await res.Content.ReadAsStringAsync();
-                    obj = JsonConvert.DeserializeObject<AIChat>(responseBody);
+                    string responseBody = await res.Content.ReadAsStringAsync();
+                    var obj = JsonConvert.DeserializeObject<AIChat>(responseBody);
 
-                    if (obj.Response == true)
-                    {
-                        return View("AIDashBoard", obj);
-                    }
+
+                    return Json(new { RasaSolution = obj.RasaSolution });
                 }
-                return View("AIDashBoard", obj);
+                return Json(new { RasaSolution = "Error: Unable to get a response from the chatbot." });
             }
             catch (Exception ex)
             {
-                Response = false;
-                Message = ex.Message;
-                return RedirectToAction("Error", "Home");
+                return Json(new { RasaSolution = $"Error: {ex.Message}" });
             }
-
         }
+
 
     }
 

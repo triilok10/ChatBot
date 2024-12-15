@@ -188,57 +188,115 @@
 </style>
 
 <div class="chat-container">
-
     <div class="user-info">
         <span>User Info: @Model.UserName</span>
         <button onclick="logout()">Logout</button>
     </div>
 
-
     <div class="chat-area">
-        <form asp-controller="AI" asp-action="AskToChatBot" method="post">
+        <form id="chatForm" asp-controller="AI" asp-action="AskToChatBot" method="post" onsubmit="return handleSubmit(event)">
             <h2>AI Powered ChatBot</h2>
             <div class="chat-history" id="chatHistory">
                 @if (Model != null)
                 {
                     <div class="user-message">What is the weather like today?</div>
-                    
                     <div class="bot-message">@Model.RasaSolution</div>
                 }
             </div>
 
             <div class="chat-input-container">
-                <input type="text" asp-for="userQuestion" placeholder="Type a message..." id="userQuestion">
+                <input type="text" asp-for="userQuestion" placeholder="Type a message..." id="userQuestion" required>
                 <button type="submit">Send</button>
             </div>
         </form>
     </div>
 </div>
 
+
+
 <script>
-    function sendMessage() {
+
+    window.onload = function () {
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        displayChatHistory(chatHistory);
+    };
+
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
         const userQuestion = document.getElementById('userQuestion').value;
-        if (userQuestion) {
-            const messageContainer = document.getElementById('chatHistory');
 
 
-            const userQuestionDiv = document.createElement('div');
-            userQuestionDiv.classList.add('user-message');
-            userQuestionDiv.textContent = userQuestion;
-            messageContainer.appendChild(userQuestionDiv);
+        const chatEntry = { user: userQuestion, bot: '' };
 
 
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.classList.add('bot-message');
-            botMessageDiv.textContent = "I’m processing your request...";
-            messageContainer.appendChild(botMessageDiv);
+        updateChatHistory(chatEntry);
 
 
-            messageContainer.scrollTop = messageContainer.scrollHeight;
+        const response = await fetch('/AI/AskToChatBot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ userQuestion: userQuestion })
+        });
+
+        if (response.ok) {
+            debugger;
+            const data = await response.json();
+
+
+            const botResponse = data.RasaSolution;
+
+
+            chatEntry.bot = botResponse;
+
+
+            updateChatHistory(chatEntry);
+
 
             document.getElementById('userQuestion').value = '';
+        } else {
+            console.error('Error fetching chatbot response');
         }
     }
+
+
+    function updateChatHistory(chatEntry) {
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+
+
+        chatHistory.push(chatEntry);
+
+
+        localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+
+
+        displayChatHistory(chatHistory);
+    }
+
+
+    function displayChatHistory(chatHistory) {
+        const chatHistoryDiv = document.getElementById('chatHistory');
+        chatHistoryDiv.innerHTML = '';
+
+        chatHistory.forEach(entry => {
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'user-message';
+            userMessageDiv.textContent = entry.user;
+
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'bot-message';
+            botMessageDiv.textContent = entry.bot;
+
+            chatHistoryDiv.appendChild(userMessageDiv);
+            chatHistoryDiv.appendChild(botMessageDiv);
+        });
+    }
+
+
 
     function logout() {
         alert("Logging out...");
